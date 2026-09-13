@@ -1,0 +1,104 @@
+/* Base reset and typography. Source: DESIGN.md §2 (base reset), §4 (typography), §6.2 (text links), §8.1 (motion). */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--fs-base) / var(--lh-base) var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg, video { display: block; max-width: 100%; height: auto; }
+h1, h2, h3, h4, p, dl, dd, figure, blockquote { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+hr { border: 0; border-top: var(--hairline); margin: 0; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+legend { padding: 0; }
+input, select, textarea { font: inherit; color: inherit; margin: 0; }
+table { border-spacing: 0; }
+::selection { background: var(--ink); color: var(--on-fill); }
+
+/* Scoped radius reset (not *{}, so native date pickers and iOS selects keep their chrome) */
+.btn, .input, .field select, .field textarea, .tag, .fig img, .sheet, .segmented label, .choice-list input, .check input {
+  border-radius: var(--radius);
+}
+
+/* Motion allowlist: only these properties transition, only this fast */
+a, .btn, .input, .field select, .field textarea, .row-link, .nav a, .bo-side a, .filters button, .drawer a {
+  transition-property: color, background-color, border-color, text-decoration-color, opacity;
+  transition-duration: 120ms;
+  transition-timing-function: ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+.skip-link { position: absolute; top: -100%; left: var(--gutter); z-index: var(--z-skip); background: var(--ink); color: var(--on-fill); padding: var(--s-2) var(--s-4); }
+.skip-link:focus { top: var(--s-2); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Headings (DESIGN.md §4.1) ---------- */
+h1 { font: 500 var(--fs-2xl) / var(--lh-2xl) var(--font-sans); letter-spacing: var(--ls-tight); max-width: 22ch; }
+h1.hero-h1 { max-width: 20ch; }
+h2 { font: 500 var(--fs-xl) / var(--lh-xl) var(--font-sans); letter-spacing: var(--ls-tight); max-width: 24ch; }
+h3 { font: 600 var(--fs-lg) / var(--lh-lg) var(--font-sans); letter-spacing: -0.005em; }
+h4 { font: 600 var(--fs-md) / var(--lh-md) var(--font-sans); letter-spacing: 0; }
+@media (max-width: 767px) {
+  h1, h1.hero-h1 { font-size: 2.125rem; }
+  h2 { font-size: 1.625rem; }
+}
+@media (min-width: 1200px) {
+  h1.hero-h1 { font-size: var(--fs-3xl); line-height: var(--lh-3xl); }
+}
+h1[tabindex="-1"]:focus { outline: none; } /* programmatic route-change focus only; the h1 is not interactive */
+
+/* ---------- Text roles ---------- */
+p, dd { max-width: var(--measure); }
+p + p { margin-top: var(--s-4); }
+.lead { font: 400 var(--fs-md) / var(--lh-md) var(--font-sans); color: var(--muted); max-width: var(--measure-lead); }
+.prose { font-size: var(--fs-read); line-height: var(--lh-read); }
+.prose p, .prose li { max-width: var(--measure); }
+.prose h3, .prose h4 { margin-top: var(--s-8); margin-bottom: var(--s-3); }
+.prose h3:first-child, .prose h4:first-child { margin-top: 0; }
+.prose ul, .prose ol { margin-block: var(--s-4); }
+small, .small { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--muted); }
+strong, b { font-weight: 500; }
+em, i { font-style: italic; font-weight: 400; }
+.meta { font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); letter-spacing: 0; max-width: var(--measure-meta); }
+.mono { font-family: var(--font-mono); }
+.num-lg { font: 500 var(--fs-num) / var(--lh-num) var(--font-mono); letter-spacing: -0.02em; color: var(--ink); }
+.italic-line { font: 400 italic var(--fs-md) / var(--lh-md) var(--font-sans); }
+code, kbd, samp { font-family: var(--font-mono); font-size: 0.9em; }
+
+/* ---------- Text links (DESIGN.md §6.2) ---------- */
+a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--rule); text-underline-offset: .18em; }
+a:hover { text-decoration-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.link-quiet { text-decoration: none; }
+.link-quiet:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+/* The trailing arrow. DESIGN.md writes `content: " →"`; the leading space is dropped when the link is a flex item
+   (price-sheet cells, table cells, 44px inline-flex links), so the gap is a margin instead. Same look, every context. */
+.link-arrow::after { content: "→"; font-family: var(--font-mono); margin-left: .35em; }
+
+.wa-link { color: var(--wa); font-weight: 500; text-decoration-color: var(--wa); }
+.wa-link:hover { text-decoration-thickness: 2px; }
+.wa-link .num { font-family: var(--font-mono); font-weight: 400; }
+.wa-link .word + .num { margin-left: .3em; } /* "WhatsApp" + number: a structural gap that survives inline-flex (which drops a literal space) */
+
+/* Link-styled button (sign out, clear filters inline): same look as a text link */
+.link-btn { text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--rule); text-underline-offset: .18em; color: var(--ink); }
+.link-btn:hover { text-decoration-color: var(--accent); }
+
+/* ---------- Print basics ---------- */
+@media print {
+  .nav, .drawer, .mobile-bar, .skip-link, .bo-side, .btn, .footer__legal a { display: none !important; }
+  .section__head, .bo-side { position: static !important; }
+  a { text-decoration: none; }
+  body { padding-bottom: 0 !important; }
+}

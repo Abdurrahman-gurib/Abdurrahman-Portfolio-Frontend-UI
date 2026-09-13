@@ -1,0 +1,70 @@
+/* Home page (DESIGN.md §7.1). Grid placements and the two page-only patterns: grouped service rows and text-only
+   case entries. Every selector is scoped to .page-home; tokens only; no new colours, radii, shadows or transitions. */
+
+/* The hero h1 keeps base.css's 20ch measure (DESIGN.md §4.1); balanced wrapping stops a one-word last line at any width. */
+.page-home .hero-h1 { text-wrap: balance; }
+
+/* Rules never double up: the sector line and the pricing band each carry their own bottom hairline. */
+.page-home .sector-line + .section { border-top: 0; }
+.page-home .band + .container > .section:first-child { border-top: 0; }
+
+/* ---------- 02 Services: rows grouped under a mono group label ---------- */
+.page-home .svc-group + .svc-group { margin-top: var(--s-8); }
+.page-home .svc-group > .eyebrow { margin-bottom: var(--s-2); }
+.page-home .svc-group > .small { margin-top: 0; max-width: var(--measure); }
+.page-home .row-link > span:nth-child(2) { display: block; min-width: 0; }
+/* A trailing unit ("per device", "per day") sits under the figure so the price never runs into the arrow cell. */
+.page-home .row-link .price .unit { display: block; font: 400 var(--fs-2xs) / var(--lh-2xs) var(--font-mono); color: var(--muted); }
+@media (max-width: 1023px) {
+  .page-home .row-link .price .unit { display: inline; margin-left: var(--s-1); }
+}
+
+/* ---------- 03 Process: step titles are h3 so the outline never skips a level ---------- */
+.page-home .steps h3 { font: 600 var(--fs-md) / var(--lh-md) var(--font-sans); letter-spacing: 0; }
+
+/* ---------- 04 Pricing: intro paragraph sits in the body above the sheet ---------- */
+.page-home .pricing-intro { margin-bottom: var(--s-8); max-width: var(--measure); }
+.page-home .sheet td.cta { white-space: nowrap; }
+.page-home .sheet td.cta a { display: inline-flex; align-items: center; min-height: var(--control-h); }
+.page-home .footnotes .mono { color: var(--muted); }
+/* Mobile ledger: group labels run edge to edge inside the sheet (not an inset box), and the unit stays on the figure's line. */
+@media (max-width: 767px) {
+  .page-home .sheet tr.group { padding: 0; }
+  .page-home .sheet tr.group td { padding: var(--s-4) var(--s-4) var(--s-2); }
+  .page-home .sheet td.num .val { white-space: nowrap; }
+  .page-home .sheet td.num .from { order: 3; margin: 0 0 0 var(--s-1); white-space: nowrap; }
+}
+/* Sheet-note titles are h3 (h2 -> h4 would skip a level); drawn exactly like DESIGN.md §6.8's .sheet-notes h4. */
+.page-home .sheet-notes h3 { font: 500 var(--fs-2xs) / var(--lh-2xs) var(--font-mono); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--ink); margin-bottom: var(--s-2); }
+
+/* ---------- 05 Work: dossier | text, no figures ---------- */
+.page-home .cases { border-top: var(--hairline); }
+.page-home .case { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: var(--s-6); padding-block: var(--s-8); border-bottom: var(--hairline); }
+@media (min-width: 1024px) {
+  .page-home .case { grid-template-columns: 3fr 5fr; column-gap: var(--col-gap); }
+}
+.page-home .case__side .eyebrow { margin-bottom: var(--s-4); }
+/* The dossier cell is three of the body's eight columns: a 6.5rem label column (CONTEXT / PERIOD / STACK, the same as
+   /work) leaves the values room to read instead of the 11rem default. Labels may break rather than push the values. */
+.page-home .case__side .spec { grid-template-columns: 6.5rem 1fr; }
+.page-home .case__side .spec dt { overflow-wrap: anywhere; }
+.page-home .case__side .spec dd { min-width: 0; }
+.page-home .case__text { margin-top: var(--s-6); }
+.page-home .case__text p { max-width: var(--measure); }
+.page-home .case__text p + p { margin-top: var(--s-4); }
+.page-home .case__text .k { font: 500 var(--fs-2xs) / 1 var(--font-mono); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); margin-right: var(--s-2); }
+/* Facts with long keys ("Operational areas", "SWIFT message types") sit under the text at the body measure, as on /work. */
+.page-home .case__facts { margin-top: var(--s-8); max-width: var(--measure); }
+.page-home .case__more { margin-top: var(--s-6); }
+.page-home .case__more a { display: inline-flex; align-items: center; min-height: var(--control-h); }
+
+/* ---------- 06 About: the closing line and the number beneath it (DESIGN.md §7.1) ---------- */
+.page-home .prose p + p { margin-top: var(--s-4); }
+.page-home .about-close { margin-top: var(--s-8); max-width: var(--measure); }
+.page-home .about-phone { margin-top: var(--s-2); }
+.page-home .about-phone a { display: inline-flex; align-items: center; min-height: var(--control-h); }
+
+/* ---------- 07 Contact: the shared foot (ContactSection); the FAQ sits under the form in cols 5–12 ---------- */
+/* The availability line lives in the section head here; keep its 13px mono size and let it wrap past the head's 28ch paragraph measure. */
+.page-home .section__head .avail { font-size: var(--fs-xs); max-width: none; }
+.page-home .contact-foot__more h3 { max-width: var(--measure); }

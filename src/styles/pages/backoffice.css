@@ -1,0 +1,174 @@
+/* Back-office pages (DESIGN.md §7.8–7.12). Grid placements and small scoped adjustments only; every component comes from
+   the shared files. Selectors are scoped to .page-bo-login, .page-bo-dashboard, .page-bo-enquiries, .page-bo-enquiry and
+   .page-bo-settings, plus one block scoped to the back-office shell (.bo). Tokens only; no new colours, radii, shadows
+   or transitions. */
+
+/* ---------- Shell (.bo) — phone-width and sidebar fixes ----------
+   .bo exists only inside the back office and this file is imported by every back-office page, so these rules cannot
+   leak into the public site. They belong in components.css §6.19 and should move there when that file is next edited.
+   Desktop: the signed-in email must not break mid-word in the 15rem sidebar. 12px mono fits the address on one line;
+   anything longer truncates (the visually-hidden "Signed in as" prefix and the full address stay in the DOM). */
+.bo .bo-side .user .email { font-size: var(--fs-2xs); line-height: 1.6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; }
+.bo .bo-side a { white-space: nowrap; }
+.bo .bo-side a.link-arrow::after { white-space: nowrap; }
+.bo .bo-body, .bo .bo-main { min-width: 0; max-width: 100%; }
+
+@media (max-width: 1023px) {
+  /* A bare 1fr track has a min-content minimum, so a non-wrapping nav row made the whole document 486px wide at 390px.
+     Only .table-wrap may ever scroll sideways. ("body .bo" because page CSS is bundled before components.css, so a bare
+     .bo would lose the cascade to the shared rule.) */
+  body .bo { grid-template-columns: minmax(0, 1fr); min-width: 0; max-width: 100%; overflow-x: clip; }
+  .bo .bo-side { justify-content: space-between; }
+  /* Brand and the Sign out block share the first row; the numbered links become a full-width, wrapping second row */
+  .bo .bo-side nav { display: flex; flex-wrap: wrap; flex-basis: 100%; width: 100%; min-width: 0; order: 3; border-top: var(--hairline); }
+  .bo .bo-side nav a { flex: 0 1 auto; min-width: 0; }
+  .bo .bo-side .user { margin-left: auto; }
+  .bo .bo-main { padding-inline: var(--gutter); }
+}
+
+/* ---------- 7.8 Login: eyebrow, h1, intro, notice, two fields, one button in cols 1–5 ---------- */
+.page-bo-login .login { grid-column: 1 / -1; }
+@media (min-width: 1024px) { .page-bo-login .login { grid-column: 1 / span 5; } }
+.page-bo-login .login > p { margin-top: var(--s-4); color: var(--muted); }
+.page-bo-login .login form { margin-top: var(--s-8); }
+.page-bo-login .login .notice { margin-bottom: var(--s-8); }
+.page-bo-login .login .loading { padding-block: var(--s-4); }
+.page-bo-login .login .view-site { margin-top: var(--s-8); }
+.page-bo-login .login .view-site a { display: inline-flex; align-items: center; min-height: var(--control-h); }
+
+/* ---------- Shared: a mono line that reports an in-flight request (saving…) ---------- */
+.page-bo-enquiry .save-state,
+.page-bo-settings .save-state { font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); min-height: var(--lh-xs); }
+
+/* Notices inside the page flow keep the block rhythm */
+.page-bo-dashboard .notice,
+.page-bo-enquiries .notice,
+.page-bo-enquiry .notice,
+.page-bo-settings .notice { margin-bottom: var(--s-8); }
+
+/* Sub-headings inside back-office pages: h2 set at the h3 size (DESIGN.md §4.1 "back-office page titles") */
+.page-bo-dashboard h2,
+.page-bo-enquiry h2 { font: 600 var(--fs-lg) / var(--lh-lg) var(--font-sans); letter-spacing: -0.005em; }
+
+/* Scrolling table wrappers are positioned so the visually-hidden header text in the blank "Open" column stays inside
+   the scroll box instead of widening the document at phone widths */
+.page-bo-dashboard .table-wrap,
+.page-bo-enquiries .table-wrap { position: relative; }
+
+/* Table rows that link to a detail page: the last cell holds the real link and sits flush right */
+.page-bo-dashboard td.open,
+.page-bo-enquiries td.open { text-align: right; padding-right: 0; white-space: nowrap; }
+.page-bo-dashboard td.open a,
+.page-bo-enquiries td.open a { display: inline-flex; align-items: center; min-height: 1.75rem; }
+/* The two enquiry lists (.table--list) keep an intrinsic width so .table-wrap scrolls sideways under 768px (DESIGN.md
+   §7.9/§7.10) instead of the browser crushing NAME / BUSINESS to one word per line and clipping Status and Open. Ref and
+   Name are the first two columns, so the enquiry is identifiable before any scroll; Received follows. */
+.page-bo-dashboard .table--list,
+.page-bo-enquiries .table--list { min-width: 40rem; }
+.page-bo-dashboard .table--list thead th,
+.page-bo-enquiries .table--list thead th { white-space: nowrap; }
+.page-bo-dashboard td.who,
+.page-bo-enquiries td.who { white-space: nowrap; }
+.page-bo-dashboard td .name,
+.page-bo-enquiries td .name { display: block; font-weight: 500; }
+/* A very long name or business truncates at 20rem rather than widening the sheet; the full text is in the cell title and on the detail page */
+.page-bo-dashboard td.who .name,
+.page-bo-enquiries td.who .name,
+.page-bo-dashboard td.who .sub,
+.page-bo-enquiries td.who .sub { max-width: 20rem; overflow: hidden; text-overflow: ellipsis; }
+.page-bo-dashboard td time,
+.page-bo-enquiries td time { white-space: nowrap; }
+/* Ref, received, type and status never break inside ("ENQ-" / "2026-" / "0004" was three lines at 390px) */
+.page-bo-dashboard td.ref,
+.page-bo-enquiries td.ref,
+.page-bo-dashboard td.received,
+.page-bo-enquiries td.received,
+.page-bo-dashboard td.kind,
+.page-bo-enquiries td.kind,
+.page-bo-dashboard td.status-cell,
+.page-bo-enquiries td.status-cell { white-space: nowrap; }
+/* Under 768px the row is Ref · Name · Received · Status · Open; Service, Type and Priority are on the detail page */
+@media (max-width: 767px) {
+  .page-bo-dashboard .col-service,
+  .page-bo-enquiries .col-service,
+  .page-bo-dashboard .col-kind,
+  .page-bo-enquiries .col-kind,
+  .page-bo-dashboard .col-priority,
+  .page-bo-enquiries .col-priority { display: none; }
+}
+
+/* ---------- 7.9 Dashboard ---------- */
+.page-bo-dashboard .stat-strip { grid-template-columns: repeat(5, 1fr); }
+.page-bo-dashboard .avail-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-2) var(--s-4); margin-bottom: var(--s-12); }
+.page-bo-dashboard .avail-row .avail { margin-top: 0; }
+.page-bo-dashboard .avail-row a { font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); white-space: nowrap; }
+.page-bo-dashboard .split { margin-bottom: var(--s-12); }
+.page-bo-dashboard .block-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2) var(--s-4); margin-bottom: var(--s-4); }
+.page-bo-dashboard .block-head a { font-size: var(--fs-sm); }
+.page-bo-dashboard .split table td:first-child { width: 100%; }
+/* 768–1023px: five figures still fit on one ruled line */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .page-bo-dashboard .stat-strip { grid-template-columns: repeat(5, 1fr); }
+  .page-bo-dashboard .stat-strip > div:nth-child(n + 2) { border-left: var(--hairline); padding-left: var(--s-4); }
+}
+/* Under 768px: a 2 × 2 strip. "Last 30 days" is dropped so no figure sits alone on a third row. */
+@media (max-width: 767px) {
+  .page-bo-dashboard .stat-strip { grid-template-columns: 1fr 1fr; }
+  .page-bo-dashboard .stat-strip > .stat-last30 { display: none; }
+  .page-bo-dashboard .stat-strip > div:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .page-bo-dashboard .stat-strip > div:nth-child(n + 3) { border-top: var(--hairline); }
+  .page-bo-dashboard .stat-strip > div:nth-child(5) { border-left: var(--hairline); padding-left: var(--s-4); }
+}
+
+/* ---------- 7.10 Enquiry list ---------- */
+.page-bo-enquiries .filters .field--search { min-width: 14rem; }
+.page-bo-enquiries .filters .field__label .opt { display: none; } /* filters are not form fields: no "(optional)" */
+.page-bo-enquiries .filters .filters__actions { display: flex; align-items: center; min-height: var(--control-h); margin-left: auto; }
+.page-bo-enquiries .table-foot .btn-row { gap: var(--s-2); }
+.page-bo-enquiries .table-foot .btn-row .btn { width: auto; }
+.page-bo-enquiries .empty .btn { margin-top: var(--s-5); }
+.page-bo-enquiries td.ref a { font-family: var(--font-mono); font-size: var(--fs-xs); text-decoration: none; }
+.page-bo-enquiries td.ref a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+.page-bo-enquiries .table--rows tbody tr { cursor: pointer; }
+/* Under 768px the filters stack in one column and the export button takes the full width */
+@media (max-width: 767px) {
+  .page-bo-enquiries .filters { flex-direction: column; align-items: stretch; }
+  .page-bo-enquiries .filters .field,
+  .page-bo-enquiries .filters .field--search { min-width: 0; }
+  .page-bo-enquiries .filters .filters__actions { margin-left: 0; }
+  .page-bo-enquiries .filters .filters__actions .btn { width: 100%; }
+}
+
+/* ---------- 7.11 Enquiry detail ---------- */
+.page-bo-enquiry .head { margin-bottom: var(--s-8); }
+.page-bo-enquiry .head h1 { margin-bottom: var(--s-3); max-width: none; text-wrap: balance; }
+.page-bo-enquiry .head .cluster { gap: var(--s-2) var(--s-5); font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); }
+.page-bo-enquiry .head .actions { margin-top: var(--s-5); }
+/* Under 480px .btn-row buttons are full width (DESIGN.md §8.3); the three one-tap status buttons go two per row to save height */
+@media (max-width: 479px) {
+  .page-bo-enquiry .head .actions .btn { width: auto; flex: 1 1 calc(50% - var(--s-3)); }
+}
+/* DOM order is sheet, main, delete block, which is the phone order (DESIGN.md §7.11: the spec dl moves above the message).
+   At >= 1024px the sheet is placed in the right column (sticky via the shared .bo-split__side rule), the main column on the
+   left, and the delete block under the sheet column once the main column ends. */
+@media (min-width: 1024px) {
+  .page-bo-enquiry .bo-split > .main { grid-column: 1; grid-row: 1; }
+  .page-bo-enquiry .bo-split > .bo-split__side { grid-column: 2; grid-row: 1; }
+  .page-bo-enquiry .bo-split > .bo-split__foot { grid-column: 2; grid-row: 2; }
+}
+.page-bo-enquiry .bo-split__foot { border-top: var(--hairline); padding-top: var(--s-6); }
+.page-bo-enquiry .main > section + section { margin-top: var(--s-12); }
+.page-bo-enquiry .main h2 { margin-bottom: var(--s-4); }
+.page-bo-enquiry .msg { margin: 0; }
+.page-bo-enquiry .note-form .field { margin-bottom: var(--s-4); }
+.page-bo-enquiry .note-form .field textarea { min-height: 6rem; }
+.page-bo-enquiry .notes { list-style: none; border-top: var(--hairline); margin-top: var(--s-8); }
+.page-bo-enquiry .notes li { padding-block: var(--s-4); border-bottom: var(--hairline); }
+.page-bo-enquiry .notes .note-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); margin-bottom: var(--s-2); }
+.page-bo-enquiry .notes .note-meta .link-btn { margin-left: auto; min-height: 1.75rem; font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--error); text-decoration-color: var(--error); }
+.page-bo-enquiry .notes .note-body { white-space: pre-wrap; font-size: var(--fs-sm); line-height: var(--lh-sm); max-width: var(--measure); }
+.page-bo-enquiry .notes .empty-line { font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); }
+.page-bo-enquiry .timeline .by { color: var(--muted); }
+.page-bo-enquiry .side > * + * { margin-top: var(--s-8); }
+.page-bo-enquiry .side .spec dd { min-width: 0; overflow-wrap: anywhere; }
+.page-bo-enquiry .side .spec dd a.wa-link { color: var(--wa); text-decoration-color: var(--wa); } /* the one green link (DESIGN.md §6.9) */

@@ -1,0 +1,65 @@
+/* About (/about). Source: DESIGN.md §7.6, §6.9, §6.11, §5.6.
+   Every selector is scoped to .page-about. Tokens only; no new colours, radius, shadow or motion. */
+
+/* ---------- Opening: intro (eyebrow, h1, lead) then prose in cols 1–7; optional portrait + facts in cols 9–12 ----------
+   DOM order is intro, facts, prose. Below 1024px that order stacks as-is, so the facts dl sits directly under the lead
+   and before the six paragraphs; at >= 1024px the facts move beside the text and span both rows. */
+.page-about .about__body { grid-column: 1 / -1; margin-top: var(--s-10); }
+@media (min-width: 1024px) {
+  .page-about .hero__main { grid-row: 1; }
+  .page-about .about__facts-col { grid-row: 1 / span 2; }
+  .page-about .about__body { grid-column: 1 / span 7; grid-row: 2; margin-top: var(--s-8); }
+}
+.page-about .about__prose > * + * { margin-top: var(--s-4); }
+.page-about .about__closing { margin-top: var(--s-8); }
+.page-about .about__closing .wa-link { display: inline-block; margin-top: var(--s-2); padding-block: var(--s-2); }
+.page-about .about__portrait { margin-bottom: var(--s-8); }
+@media (max-width: 1023px) { .page-about .about__portrait { max-width: 60%; } }  /* DESIGN.md §7.6 mobile: portrait at 60%, left-aligned */
+.page-about .about__facts .lines { display: block; }
+
+/* Long mono keys (INFRASTRUCTURE & TELEPHONY) must never run into the value column */
+.page-about .spec dt { overflow-wrap: anywhere; }
+
+/* ---------- Timeline: vertical ruled list, mono period column ---------- */
+.page-about .about__timeline { list-style: none; border-top: var(--hairline); }
+.page-about .about__timeline > li { display: grid; grid-template-columns: 1fr; row-gap: var(--s-2); padding: var(--s-5) 0; border-bottom: var(--hairline); }
+@media (min-width: 768px) {
+  .page-about .about__timeline > li { grid-template-columns: 12rem 1fr; column-gap: var(--s-4); row-gap: 0; align-items: start; }
+}
+.page-about .about__timeline .when { font: 400 var(--fs-xs) / 1.7 var(--font-mono); color: var(--muted); }
+.page-about .about__timeline h3 { font: 500 var(--fs-md) / var(--lh-md) var(--font-sans); letter-spacing: 0; }
+.page-about .about__timeline .org { margin-top: var(--s-1); font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--muted); }
+.page-about .about__timeline p { margin-top: var(--s-2); font-size: var(--fs-sm); line-height: var(--lh-sm); max-width: 52ch; }
+
+/* ---------- Credentials (education, certifications): compact ruled rows ---------- */
+.page-about .about__creds { list-style: none; border-top: var(--hairline); }
+.page-about .about__creds > li { display: grid; grid-template-columns: 1fr; padding: var(--s-3) 0; border-bottom: var(--hairline); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+@media (min-width: 768px) {
+  .page-about .about__creds > li { grid-template-columns: 1fr 9rem; column-gap: var(--s-4); }
+}
+.page-about .about__creds .what { font-weight: 500; }
+.page-about .about__creds .who { display: block; margin-top: var(--s-1); color: var(--muted); }
+.page-about .about__creds .yr { font: 400 var(--fs-xs) / 1.7 var(--font-mono); color: var(--muted); white-space: nowrap; }
+@media (min-width: 768px) { .page-about .about__creds .yr { text-align: right; } }
+.page-about .about__subgroup + .about__subgroup { margin-top: var(--s-12); }
+.page-about .about__subgroup h3 { margin-bottom: var(--s-4); }
+
+/* ---------- Awards: one ruled list, year right-aligned in mono (same pattern as the credentials) ---------- */
+.page-about .about__awards { list-style: none; border-top: var(--hairline); }
+.page-about .about__awards > li { display: grid; grid-template-columns: 1fr 3.5rem; column-gap: var(--s-4); padding: var(--s-3) 0; border-bottom: var(--hairline); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+.page-about .about__awards > li > span:first-child { max-width: var(--measure); }
+.page-about .about__awards .yr { font: 400 var(--fs-xs) / 1.7 var(--font-mono); color: var(--muted); text-align: right; }
+
+/* ---------- Tools: the spec list stacks label above value on phones (the 7rem label column cannot hold the longer keys) ---------- */
+@media (max-width: 767px) {
+  .page-about .about__tools { grid-template-columns: 1fr; }
+  .page-about .about__tools dt { border-bottom: 0; padding-bottom: 0; }
+  .page-about .about__tools dd { padding-top: var(--s-1); }
+}
+
+/* ---------- Commitments: numbered ruled list ---------- */
+.page-about .about__principles { list-style: none; counter-reset: c; border-top: var(--hairline); }
+.page-about .about__principles > li { counter-increment: c; display: grid; grid-template-columns: 3.5rem 1fr; column-gap: var(--s-4); padding: var(--s-5) 0; border-bottom: var(--hairline); }
+.page-about .about__principles > li::before { content: counter(c, decimal-leading-zero); font: 500 var(--fs-xs) / 1.6 var(--font-mono); color: var(--muted); }
+.page-about .about__principles h3 { font: 600 var(--fs-md) / var(--lh-md) var(--font-sans); letter-spacing: 0; }
+.page-about .about__principles p { margin-top: var(--s-2); font-size: var(--fs-sm); line-height: var(--lh-sm); max-width: 52ch; }
