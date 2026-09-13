@@ -40,7 +40,7 @@ function useSessionGuard() {
   );
 }
 
-/** Settings (DESIGN.md §7.12): ruled sections with the head in cols 1–3 and the fields in cols 5–12; one save per section. */
+/** Settings (DESIGN.md §7.12): ruled sections with the head in cols 1 to 3 and the fields in cols 5 to 12; one save per section. */
 export default function Settings() {
   useSeo(`${COPY.backoffice.settings} · ${COPY.backoffice.title}`);
   const bo = COPY.backoffice;
@@ -190,7 +190,7 @@ export default function Settings() {
                   <div className="preview">
                     <span className="k">{s.preview}</span>
                     <p className={previewClass}>
-                      {COPY.shell.availabilityLabel} — {availabilityNote.trim() || '…'} · {COPY.shell.availabilityReplies} {responseTime.trim() || '…'}
+                      {COPY.shell.availabilityLabel}: {availabilityNote.trim() || '…'} · {COPY.shell.availabilityReplies} {responseTime.trim() || '…'}
                     </p>
                   </div>
                   <div className="form-foot">

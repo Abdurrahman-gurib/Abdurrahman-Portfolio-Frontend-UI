@@ -5,136 +5,106 @@ import { SERVICES, SERVICE_GROUPS } from '../content/services';
 import { PROCESS } from '../content/about';
 import { OWNER } from '../content/site';
 import type { ServiceGroup } from '../content/types';
-import { Breadcrumb, SectionHeader, Button, WhatsAppButton, AvailabilityLine, DefinitionList } from '../components';
+import { AvailabilityLine, Button, CtaBand, Headline, PageHero, ProcessSteps, Reveal, SectionHeader, StatChips, WhatsAppButton } from '../components';
 import '../styles/pages/services.css';
 
 const S = COPY.services;
 const GROUP_ORDER = Object.keys(SERVICE_GROUPS) as ServiceGroup[];
 
-/** Sub-number in the 02 section, DESIGN.md §5.4 format: "02.1" … "02.13" (no zero-pad). */
-function serviceNumber(index: string): string {
-  return `02.${Number(index)}`;
-}
-
-/** Label of a numbered index entry (COPY.nav.index), e.g. "03" -> "Process". */
 function indexLabel(n: string): string {
   return COPY.nav.index.find((item) => item.n === n)?.label ?? '';
 }
 
-/**
- * /services — the 02 section of the document: one sticky head, every service as a numbered ruled row,
- * grouped under the SERVICE_GROUPS headings. Then 03 Process and 07 Contact.
- */
+/** /services: every service as a glass card, grouped by category, then the process and a call to action. */
 export default function Services() {
   useSeo(COPY.seo.services.title, COPY.seo.services.description);
   const { settings } = useSite();
 
-  const facts = [
-    { term: S.factServices, detail: <span className="mono">{SERVICES.length}</span> },
-    { term: S.factResponse, detail: `${S.factRepliesPrefix} ${settings.responseTime}` },
-    { term: S.factPricing, detail: S.factPricingValue },
-    { term: S.factBased, detail: OWNER.location },
-  ];
-
   return (
-    <div className="container page-services">
-      <section className="section section--first">
-        <Breadcrumb items={[{ label: S.title }]} />
-        <div className="grid">
-          <div className="hero__main">
-            <span className="eyebrow">
-              <span className="n">02</span> — {S.title}
-            </span>
-            <h1>{S.headline}</h1>
-            <p className="lead">{S.intro}</p>
-            <div className="btn-row">
-              <Button as="link" to="/contact" variant="primary">
-                {COPY.nav.cta}
-              </Button>
-              <WhatsAppButton />
-            </div>
-            <AvailabilityLine />
-          </div>
-          <div className="hero__facts">
-            <DefinitionList items={facts} aria-label={S.factsLabel} />
-          </div>
+    <div className="page-services">
+      <PageHero
+        breadcrumb={[{ label: S.title }]}
+        eyebrow={S.title}
+        titleId="services-title"
+        title={<Headline text={S.headline} words={4} />}
+        lead={S.intro}
+        aside={
+          <StatChips
+            aria-label={S.factsLabel}
+            items={[
+              { value: SERVICES.length, label: S.factServices, grad: true },
+              { value: S.factRepliesPrefix, label: settings.responseTime },
+              { value: OWNER.location, label: S.factBased },
+              { value: S.factPricing, label: S.factPricingValue },
+            ]}
+          />
+        }
+      >
+        <div className="btn-row">
+          <Button as="link" to="/contact" variant="primary">
+            {COPY.nav.cta}
+          </Button>
+          <WhatsAppButton />
         </div>
-      </section>
+        <AvailabilityLine />
+      </PageHero>
 
-      <section className="section" id="services">
-        <div className="grid">
-          <SectionHeader title={S.listTitle} intro={COPY.home.servicesIntro} />
-          <div className="section__body stack--12">
-            {GROUP_ORDER.map((key) => {
-              const group = SERVICE_GROUPS[key];
-              const list = SERVICES.filter((service) => service.group === key);
-              if (list.length === 0) return null;
-              const headingId = `group-${key}`;
-              return (
-                <div className="svc-group" key={key}>
+      <section className="section band--page" id="services">
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={S.title} title={S.listTitle} intro={COPY.home.servicesIntro} />
+          </Reveal>
+          {GROUP_ORDER.map((key) => {
+            const group = SERVICE_GROUPS[key];
+            const list = SERVICES.filter((service) => service.group === key);
+            if (list.length === 0) return null;
+            const headingId = `group-${key}`;
+            return (
+              <div className="svc-group" key={key}>
+                <Reveal className="svc-group__head">
                   <h3 id={headingId}>{group.label}</h3>
-                  <p className="small">{group.blurb}</p>
-                  <ul className="rows" aria-labelledby={headingId}>
-                    {list.map((service) => (
-                      <li key={service.slug}>
-                        <Link className="row-link" to={`/services/${service.slug}`}>
-                          <span className="idx">{serviceNumber(service.index)}</span>
-                          <span>
-                            <h4>{service.name}</h4>
-                            <p>{service.tagline}</p>
-                            <span className="stack">{service.tools.slice(0, 3).join(' · ')}</span>
+                  <p>{group.blurb}</p>
+                </Reveal>
+                <div className="cards cards--3" role="list" aria-labelledby={headingId}>
+                  {list.map((service, i) => (
+                    <Reveal key={service.slug} delay={(i % 3) * 70} role="listitem">
+                      <Link className="card card--hover svc-card" data-group={key} to={`/services/${service.slug}`}>
+                        <span className="card__accent" aria-hidden="true" />
+                        <h4>{service.name}</h4>
+                        <p>{service.tagline}</p>
+                        <ul className="tag-row" aria-label={S.detail.facts.stack}>
+                          {service.tools.slice(0, 3).map((tool) => (
+                            <li className="tag" key={tool}>
+                              {tool}
+                            </li>
+                          ))}
+                        </ul>
+                        <span className="svc-card__meta">
+                          <span className="svc-card__price">{service.priceFrom}</span>
+                          <span className="svc-card__arrow" aria-hidden="true">
+                            &rarr;
                           </span>
-                          <span className="price">{service.priceFrom}</span>
-                          <span className="arrow" aria-hidden="true">
-                            →
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                        </span>
+                      </Link>
+                    </Reveal>
+                  ))}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      <section className="section" id="process">
-        <div className="grid">
-          <SectionHeader index="03" eyebrow={indexLabel('03')} title={COPY.home.processTitle} intro={S.processIntro} />
-          <div className="section__body">
-            <ol className="steps">
-              {PROCESS.map((step) => (
-                <li key={step.index}>
-                  <div>
-                    <h4>{step.title}</h4>
-                    <p>{step.body}</p>
-                    <p className="out">
-                      {S.outputLabel} — {step.output}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+      <section className="section band--dark" id="process">
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={indexLabel('03')} title={COPY.home.processTitle} intro={S.processIntro} />
+          </Reveal>
+          <ProcessSteps steps={PROCESS} outputLabel={S.outputLabel} as="h4" />
         </div>
       </section>
 
-      <section className="section" id="contact">
-        <div className="grid">
-          <SectionHeader index="07" eyebrow={indexLabel('07')} title={COPY.home.contactTitle} />
-          <div className="section__body">
-            <p className="measure">{S.contactBody}</p>
-            <div className="btn-row mt-8">
-              <Button as="link" to="/contact" variant="primary">
-                {COPY.nav.cta}
-              </Button>
-              <WhatsAppButton />
-            </div>
-            <AvailabilityLine />
-          </div>
-        </div>
-      </section>
+      <CtaBand id="contact" eyebrow={COPY.contact.title} title={COPY.home.contactTitle} body={S.contactBody} />
     </div>
   );
 }

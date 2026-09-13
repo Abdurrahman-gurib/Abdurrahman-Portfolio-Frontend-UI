@@ -9,12 +9,14 @@ import { PACKAGES } from '../content/packages';
 import { OWNER, TEL_LINK, mailtoLink, whatsappLink } from '../content/site';
 import {
   AvailabilityLine,
-  Breadcrumb,
   Button,
   CheckboxField,
   DefinitionList,
   FaqList,
+  Headline,
   Notice,
+  PageHero,
+  Reveal,
   SectionHeader,
   SelectField,
   TextAreaField,
@@ -66,7 +68,7 @@ const FIELD_ORDER: FieldKey[] = [
 /** Fields collapsed under the "Add details (optional)" disclosure. */
 const MORE_FIELDS: FieldKey[] = ['company', 'package', 'budget', 'timeline', 'website'];
 
-/** Labels as printed on this page: the number field is "WhatsApp or phone" here (DESIGN.md §6.6). */
+/** Labels as printed on this page: the number field is "WhatsApp or phone" here. */
 function labelFor(key: FieldKey): string {
   return key === 'phone' ? C.phoneLabel : F[key].label;
 }
@@ -152,7 +154,7 @@ function optional(value: string): string | undefined {
   return t ? t : undefined;
 }
 
-/** Channel hrefs come from site.ts; labels, values and hints from copy.ts. Every value is mono (a number, an address or a URL). */
+/** Channel hrefs come from site.ts; labels, values and hints from copy.ts. */
 function channelHref(label: string): { href: string; external: boolean; wa: boolean } {
   switch (label) {
     case 'WhatsApp':
@@ -226,7 +228,7 @@ export default function Contact() {
     if (pre.package) setMoreOpen(true);
   }, [searchParams]);
 
-  // Failed submit: focus the error summary. Success: focus the "Received" heading (DESIGN.md §8.1).
+  // Failed submit: focus the error summary. Success: focus the "Received" heading.
   useEffect(() => {
     if (summary) noticeRef.current?.focus();
   }, [summary]);
@@ -383,259 +385,257 @@ export default function Contact() {
       : undefined;
 
   return (
-    <div className="container page-contact">
-      <section className="section section--first">
-        <Breadcrumb items={[{ label: C.title }]} />
-        <div className="grid contact-hero">
-          <header className="section__head section__head--static contact-head">
-            <span className="eyebrow">
-              <span className="n">07</span> — {C.title}
-            </span>
-            <h1>{C.headline}</h1>
-            <p>{C.intro}</p>
-            <AvailabilityLine />
-          </header>
+    <div className="page-contact">
+      <PageHero breadcrumb={[{ label: C.title }]} eyebrow={C.title} titleId="contact-title" title={<Headline text={C.headline} words={3} />} lead={C.intro}>
+        <AvailabilityLine />
+      </PageHero>
 
-          <div className="contact-ladder">
-            <DefinitionList className="ladder" items={ladder} aria-label={COPY.shell.contactStripLabel} />
-            <Button as="a" href={whatsappLink()} target="_blank" variant="whatsapp" block>
-              {COPY.shell.whatsappWord} <span className="mono">{OWNER.phoneDisplay}</span>
-            </Button>
-          </div>
+      <section className="section band--page contact-main">
+        <div className="container">
+          <div className="contact-foot__grid">
+            <Reveal className="contact-ladder card card--strong">
+              <DefinitionList className="ladder" items={ladder} aria-label={COPY.shell.contactStripLabel} />
+              <Button as="a" href={whatsappLink()} target="_blank" variant="whatsapp" block arrow={false}>
+                {COPY.shell.whatsappWord} <span className="mono">{OWNER.phoneDisplay}</span>
+              </Button>
+            </Reveal>
 
-          <div className="contact-form-col">
-            <span className="eyebrow">{C.formEyebrow}</span>
-            <h2>{C.formTitle}</h2>
-            <p className="small contact-form-intro">{C.formIntro}</p>
+            <Reveal className="contact-form-col card card--strong card--pad-lg" delay={80}>
+              <span className="eyebrow">{C.formEyebrow}</span>
+              <h2>{C.formTitle}</h2>
+              <p className="small contact-form-intro">{C.formIntro}</p>
 
-            {result ? (
-              <div className="form-success">
-                <h3 ref={successRef} tabIndex={-1}>
-                  {C.successTitle}
-                </h3>
-                <span className="ref">{result.reference}</span>
-                <SuccessBody reference={result.reference} responseTime={result.responseTime || site.settings.responseTime} />
-                <div className="btn-row">
-                  <Button as="a" href={result.whatsapp || whatsappLink()} target="_blank" variant="whatsapp">
-                    {C.successWhatsapp}
-                  </Button>
-                  <Button variant="text" onClick={sendAnother}>
-                    {C.sendAnother}
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <form className="contact-form" noValidate onSubmit={onSubmit} aria-busy={sending || undefined}>
-                {summary && (
-                  <Notice tone="error" title={summaryTitle} ref={noticeRef} id="contact-errors">
-                    {summary.type === 'fields' ? (
-                      <ul>
-                        {summary.keys.map((k) => (
-                          <li key={k}>
-                            <a href={`#f-${k}`} onClick={focusField(k)}>
-                              {labelFor(k)}
-                            </a>
-                            : {errors[k]}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <>
-                        <p>{summary.text}</p>
-                        <p>
-                          <a className="wa-link" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                            {C.whatsappFallback}
-                          </a>
-                        </p>
-                      </>
-                    )}
-                  </Notice>
-                )}
-
-                <fieldset className="contact-kind">
-                  <legend className="segmented__label">{C.kindLegend}</legend>
-                  <div className="segmented">
-                    {KINDS.map((k) => (
-                      <Fragment key={k.value}>
-                        <input
-                          type="radio"
-                          id={`f-kind-${k.value}`}
-                          name="kind"
-                          value={k.value}
-                          checked={values.kind === k.value}
-                          onChange={() => set('kind', k.value)}
-                          aria-describedby="f-kind-help"
-                        />
-                        <label htmlFor={`f-kind-${k.value}`}>{k.short}</label>
-                      </Fragment>
-                    ))}
+              {result ? (
+                <div className="form-success">
+                  <h3 ref={successRef} tabIndex={-1}>
+                    {C.successTitle}
+                  </h3>
+                  <span className="ref">{result.reference}</span>
+                  <SuccessBody reference={result.reference} responseTime={result.responseTime || site.settings.responseTime} />
+                  <div className="btn-row">
+                    <Button as="a" href={result.whatsapp || whatsappLink()} target="_blank" variant="whatsapp">
+                      {C.successWhatsapp}
+                    </Button>
+                    <Button variant="text" onClick={sendAnother}>
+                      {C.sendAnother}
+                    </Button>
                   </div>
-                  <p className="field__help" id="f-kind-help">
-                    {selectedKind.hint}
-                  </p>
-                </fieldset>
-
-                <TextField
-                  label={labelFor('name')}
-                  name="name"
-                  value={values.name}
-                  onChange={(x) => set('name', x)}
-                  placeholder={F.name.placeholder}
-                  autoComplete="name"
-                  error={errors.name}
-                />
-
-                <div className="form-row">
-                  <TextField
-                    label={labelFor('phone')}
-                    name="phone"
-                    type="tel"
-                    inputMode="tel"
-                    value={values.phone}
-                    onChange={(x) => set('phone', x)}
-                    placeholder={F.phone.placeholder}
-                    hint={F.phone.hint}
-                    autoComplete="tel"
-                    error={errors.phone}
-                  />
-                  <TextField
-                    label={labelFor('email')}
-                    name="email"
-                    type="email"
-                    inputMode="email"
-                    value={values.email}
-                    onChange={(x) => set('email', x)}
-                    placeholder={F.email.placeholder}
-                    autoComplete="email"
-                    error={errors.email}
-                  />
                 </div>
+              ) : (
+                <form className="contact-form" noValidate onSubmit={onSubmit} aria-busy={sending || undefined}>
+                  {summary && (
+                    <Notice tone="error" title={summaryTitle} ref={noticeRef} id="contact-errors">
+                      {summary.type === 'fields' ? (
+                        <ul>
+                          {summary.keys.map((k) => (
+                            <li key={k}>
+                              <a href={`#f-${k}`} onClick={focusField(k)}>
+                                {labelFor(k)}
+                              </a>
+                              : {errors[k]}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <>
+                          <p>{summary.text}</p>
+                          <p>
+                            <a className="wa-link" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                              {C.whatsappFallback}
+                            </a>
+                          </p>
+                        </>
+                      )}
+                    </Notice>
+                  )}
 
-                <CheckboxField
-                  label={labelFor('preferWhatsapp')}
-                  name="preferWhatsapp"
-                  checked={values.preferWhatsapp}
-                  onChange={(b) => set('preferWhatsapp', b)}
-                  hint={F.preferWhatsapp.hint}
-                  error={errors.preferWhatsapp}
-                />
+                  <fieldset className="contact-kind">
+                    <legend className="segmented__label">{C.kindLegend}</legend>
+                    <div className="segmented">
+                      {KINDS.map((k) => (
+                        <Fragment key={k.value}>
+                          <input
+                            type="radio"
+                            id={`f-kind-${k.value}`}
+                            name="kind"
+                            value={k.value}
+                            checked={values.kind === k.value}
+                            onChange={() => set('kind', k.value)}
+                            aria-describedby="f-kind-help"
+                          />
+                          <label htmlFor={`f-kind-${k.value}`}>{k.short}</label>
+                        </Fragment>
+                      ))}
+                    </div>
+                    <p className="field__help" id="f-kind-help">
+                      {selectedKind.hint}
+                    </p>
+                  </fieldset>
 
-                <SelectField
-                  label={labelFor('service')}
-                  name="service"
-                  value={values.service}
-                  onChange={setService}
-                  options={SERVICE_OPTIONS}
-                  placeholder={F.service.placeholder}
-                  hint={F.service.hint}
-                  error={errors.service}
-                />
+                  <TextField
+                    label={labelFor('name')}
+                    name="name"
+                    value={values.name}
+                    onChange={(x) => set('name', x)}
+                    placeholder={F.name.placeholder}
+                    autoComplete="name"
+                    error={errors.name}
+                  />
 
-                <TextAreaField
-                  label={labelFor('message')}
-                  name="message"
-                  rows={6}
-                  value={values.message}
-                  onChange={(x) => set('message', x)}
-                  placeholder={F.message.placeholder}
-                  hint={F.message.hint}
-                  error={errors.message}
-                />
-
-                {/* Optional detail behind a native disclosure (DESIGN.md §8.2: details/summary, never a JS accordion). */}
-                <details className="contact-more" open={moreIsOpen} onToggle={onMoreToggle}>
-                  <summary>
-                    <span>{C.moreSummary}</span>
-                    <span className="small contact-more__hint">{C.moreHint}</span>
-                  </summary>
-                  <div className="contact-more__body">
+                  <div className="form-row">
                     <TextField
-                      label={labelFor('company')}
-                      name="company"
-                      required={false}
-                      value={values.company}
-                      onChange={(x) => set('company', x)}
-                      placeholder={F.company.placeholder}
-                      autoComplete="organization"
-                      error={errors.company}
+                      label={labelFor('phone')}
+                      name="phone"
+                      type="tel"
+                      inputMode="tel"
+                      value={values.phone}
+                      onChange={(x) => set('phone', x)}
+                      placeholder={F.phone.placeholder}
+                      hint={F.phone.hint}
+                      autoComplete="tel"
+                      error={errors.phone}
                     />
+                    <TextField
+                      label={labelFor('email')}
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      value={values.email}
+                      onChange={(x) => set('email', x)}
+                      placeholder={F.email.placeholder}
+                      autoComplete="email"
+                      error={errors.email}
+                    />
+                  </div>
 
-                    {packageOptions.length > 0 && (
-                      <SelectField
-                        label={labelFor('package')}
-                        name="package"
-                        required={false}
-                        value={values.package}
-                        onChange={(x) => set('package', x)}
-                        options={packageOptions}
-                        placeholder={F.package.placeholder}
-                        error={errors.package}
-                      />
-                    )}
+                  <CheckboxField
+                    label={labelFor('preferWhatsapp')}
+                    name="preferWhatsapp"
+                    checked={values.preferWhatsapp}
+                    onChange={(b) => set('preferWhatsapp', b)}
+                    hint={F.preferWhatsapp.hint}
+                    error={errors.preferWhatsapp}
+                  />
 
-                    <div className="form-row">
-                      <SelectField
-                        label={labelFor('budget')}
-                        name="budget"
+                  <SelectField
+                    label={labelFor('service')}
+                    name="service"
+                    value={values.service}
+                    onChange={setService}
+                    options={SERVICE_OPTIONS}
+                    placeholder={F.service.placeholder}
+                    hint={F.service.hint}
+                    error={errors.service}
+                  />
+
+                  <TextAreaField
+                    label={labelFor('message')}
+                    name="message"
+                    rows={6}
+                    value={values.message}
+                    onChange={(x) => set('message', x)}
+                    placeholder={F.message.placeholder}
+                    hint={F.message.hint}
+                    error={errors.message}
+                  />
+
+                  {/* Optional detail behind a native disclosure. */}
+                  <details className="contact-more" open={moreIsOpen} onToggle={onMoreToggle}>
+                    <summary>
+                      <span>{C.moreSummary}</span>
+                      <span className="small contact-more__hint">{C.moreHint}</span>
+                    </summary>
+                    <div className="contact-more__body">
+                      <TextField
+                        label={labelFor('company')}
+                        name="company"
                         required={false}
-                        value={values.budget}
-                        onChange={(x) => set('budget', x)}
-                        options={BUDGET_OPTIONS}
-                        placeholder={F.budget.placeholder}
-                        hint={F.budget.hint}
-                        error={errors.budget}
+                        value={values.company}
+                        onChange={(x) => set('company', x)}
+                        placeholder={F.company.placeholder}
+                        autoComplete="organization"
+                        error={errors.company}
                       />
-                      <SelectField
-                        label={labelFor('timeline')}
-                        name="timeline"
+
+                      {packageOptions.length > 0 && (
+                        <SelectField
+                          label={labelFor('package')}
+                          name="package"
+                          required={false}
+                          value={values.package}
+                          onChange={(x) => set('package', x)}
+                          options={packageOptions}
+                          placeholder={F.package.placeholder}
+                          error={errors.package}
+                        />
+                      )}
+
+                      <div className="form-row">
+                        <SelectField
+                          label={labelFor('budget')}
+                          name="budget"
+                          required={false}
+                          value={values.budget}
+                          onChange={(x) => set('budget', x)}
+                          options={BUDGET_OPTIONS}
+                          placeholder={F.budget.placeholder}
+                          hint={F.budget.hint}
+                          error={errors.budget}
+                        />
+                        <SelectField
+                          label={labelFor('timeline')}
+                          name="timeline"
+                          required={false}
+                          value={values.timeline}
+                          onChange={(x) => set('timeline', x)}
+                          options={TIMELINE_OPTIONS}
+                          placeholder={F.timeline.placeholder}
+                          error={errors.timeline}
+                        />
+                      </div>
+
+                      <TextField
+                        label={labelFor('website')}
+                        name="website"
+                        type="url"
+                        inputMode="url"
                         required={false}
-                        value={values.timeline}
-                        onChange={(x) => set('timeline', x)}
-                        options={TIMELINE_OPTIONS}
-                        placeholder={F.timeline.placeholder}
-                        error={errors.timeline}
+                        value={values.website}
+                        onChange={(x) => set('website', x)}
+                        placeholder={F.website.placeholder}
+                        hint={F.website.hint}
+                        autoComplete="url"
+                        error={errors.website}
                       />
                     </div>
+                  </details>
 
-                    <TextField
-                      label={labelFor('website')}
-                      name="website"
-                      type="url"
-                      inputMode="url"
-                      required={false}
-                      value={values.website}
-                      onChange={(x) => set('website', x)}
-                      placeholder={F.website.placeholder}
-                      hint={F.website.hint}
-                      autoComplete="url"
-                      error={errors.website}
-                    />
+                  {/* Honeypot: off-screen, out of the tab order, never filled by people. Not display:none, so bots still see it. */}
+                  <div className="visually-hidden" aria-hidden="true">
+                    <label htmlFor="f-companyWebsiteUrl">{C.honeypotLabel}</label>
+                    <input ref={honeypotRef} id="f-companyWebsiteUrl" name="companyWebsiteUrl" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
                   </div>
-                </details>
 
-                {/* Honeypot: off-screen, out of the tab order, never filled by people. Not display:none, so bots still see it. */}
-                <div className="visually-hidden" aria-hidden="true">
-                  <label htmlFor="f-companyWebsiteUrl">{C.honeypotLabel}</label>
-                  <input ref={honeypotRef} id="f-companyWebsiteUrl" name="companyWebsiteUrl" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
-                </div>
-
-                <div className="form-foot">
-                  <Button type="submit" variant="primary" disabled={sending}>
-                    {sending ? C.submitting : (C.submitByKind[values.kind] ?? C.submit)}
-                  </Button>
-                  <p className="note">{C.privacyNote}</p>
-                </div>
-              </form>
-            )}
+                  <div className="form-foot">
+                    <Button type="submit" variant="primary" disabled={sending}>
+                      {sending ? C.submitting : (C.submitByKind[values.kind] ?? C.submit)}
+                    </Button>
+                    <p className="note">{C.privacyNote}</p>
+                  </div>
+                </form>
+              )}
+            </Reveal>
           </div>
         </div>
       </section>
 
       <section className="section" id="questions">
-        <div className="grid">
-          <SectionHeader eyebrow={C.questionsEyebrow} title={C.questionsTitle} />
-          <div className="section__body">
-            <FaqList items={faqs} />
+        <div className="container">
+          <div className="split split--side">
+            <Reveal>
+              <SectionHeader eyebrow={C.questionsEyebrow} title={C.questionsTitle} />
+              <FaqList items={faqs} />
+            </Reveal>
           </div>
         </div>
       </section>

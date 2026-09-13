@@ -21,17 +21,17 @@ export interface Service {
   name: string;
   /** One line under the name (max ~90 chars). */
   tagline: string;
-  /** 2–3 short paragraphs. Plain prose, British English. */
+  /** Two or three short paragraphs. Plain prose, British English. */
   intro: string[];
-  /** Concrete things the client receives. 5–9 items, each a short phrase. */
+  /** Concrete things the client receives. 5 to 9 items, each a short phrase. */
   deliverables: string[];
-  /** Situations where this service fits. 3–5 items, each a short phrase starting with a noun or "You…". */
+  /** Situations where this service fits. 3 to 5 items, each a short phrase starting with a noun or "You…". */
   goodFor: string[];
   /** Technologies/vendors used, for the sidebar. */
   tools: string[];
   /** Indicative price wording, e.g. "From MUR 15,000" or "Quoted after a free site visit". */
   priceFrom: string;
-  /** Typical lead time wording, e.g. "2–4 weeks". */
+  /** Typical lead time wording, e.g. "2 to 4 weeks". */
   typicalTimeline: string;
   /** Which enquiry kind the CTA should pre-select. */
   enquiryKind: 'quote' | 'audit' | 'callback' | 'contact';
@@ -50,7 +50,7 @@ export interface Package {
   /** Group tab on the pricing page. */
   group: 'websites' | 'support' | 'software' | 'it';
   name: string;
-  /** e.g. "MUR 15,000" — the headline one-off price. */
+  /** e.g. "MUR 15,000", the headline one-off price. */
   price: string;
   /** e.g. "one-off" | "per month" | "per visit" */
   priceUnit: string;
@@ -58,7 +58,7 @@ export interface Package {
   priceNote?: string;
   /** Who this is for, one sentence. */
   bestFor: string;
-  /** Delivery time, e.g. "2–3 weeks". */
+  /** Delivery time, e.g. "2 to 3 weeks". */
   delivery: string;
   includes: string[];
   /** Items explicitly not included (keeps quotes honest). */
@@ -94,9 +94,9 @@ export interface CaseStudy {
   problem: string;
   approach: string;
   outcome: string;
-  /** 3–6 tags: technologies or capabilities. */
+  /** 3 to 6 tags: technologies or capabilities. */
   stack: string[];
-  /** Optional 2–4 short factual metrics, e.g. { label: "Operational areas", value: "6" }. Only real facts. */
+  /** Optional 2 to 4 short factual metrics, e.g. { label: "Operational areas", value: "6" }. Only real facts. */
   facts?: Array<{ label: string; value: string }>;
 }
 

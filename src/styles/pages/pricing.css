@@ -1,99 +1,11 @@
-/* /pricing — page placements only. Source: DESIGN.md §7.4 (Packages & pricing), §6.8 (price sheet, mobile ledger).
-   Every selector is scoped to .page-pricing. Tokens only; no new colours, radii, shadows or transitions. */
+/* /pricing: jump chips in the hero, one card grid per group, terms and notes. */
 
-/* ---------- Page head: the package index sits in the facts slot (cols 9–12) ---------- */
-.page-pricing #package-index { scroll-margin-top: var(--sticky-top); }
-.page-pricing .pricing-index { list-style: none; border-top: var(--hairline); margin-top: var(--s-4); }
-.page-pricing .pricing-index li { border-bottom: var(--hairline); }
-.page-pricing .pricing-index a {
-  display: grid; grid-template-columns: 3.5rem 1fr auto; column-gap: var(--s-4); align-items: center;
-  min-height: var(--control-h); padding-block: var(--s-2);
-  color: var(--ink); font: 500 var(--fs-sm) / var(--lh-sm) var(--font-sans);
-}
-.page-pricing .pricing-index .n { font: 400 var(--fs-xs) / 1 var(--font-mono); color: var(--muted); }
-.page-pricing .pricing-index .count { font: 400 var(--fs-xs) / 1 var(--font-mono); color: var(--muted); white-space: nowrap; }
-
-/* ---------- The sheet band: one band, one group per section, hairline between groups ---------- */
-.page-pricing .band .section + .section { border-top: var(--hairline); }
-.page-pricing .band + .container > .section:first-child { border-top: 0; }   /* the band's own bottom hairline closes it */
-.page-pricing .pkg-group { scroll-margin-top: var(--sticky-top); }
-@media (min-width: 1024px) {
-  .page-pricing .pkg-group .section__body--wide { margin-top: var(--s-8); }
-}
-
-/* Back to the jump list after each group: one mono line, a 44px target */
-.page-pricing .pkg-group__back { margin-top: var(--s-4); font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); }
-.page-pricing .pkg-group__back a { display: inline-flex; align-items: center; min-height: var(--control-h); color: var(--muted); }
-
-/* Column widths at table widths; under 1024px the sheet scrolls inside .table-wrap rather than crushing the list column */
-.page-pricing .sheet .th-pkg { width: 24%; }
-.page-pricing .sheet .th-inc { width: 40%; }
-.page-pricing .sheet .th-del { width: 12%; }
-.page-pricing .sheet .th-price { width: 14%; }
-.page-pricing .sheet .th-cta { width: 10%; }
-@media (min-width: 768px) and (max-width: 1023px) { .page-pricing .sheet { min-width: 56rem; } }
-
-/* The PRICE header sits on the same right edge as the figures beneath it (td.num is inset by --s-4 on the sheet) */
-.page-pricing .sheet th.num { text-align: right; padding-right: var(--s-4); }
-
-/* Package cell: name (td.pkg sets 500 / 16px), then "best for" in sans */
-.page-pricing .sheet td.pkg .pkg__name { display: block; }
-.page-pricing .sheet td.pkg .pkg__for { margin-top: var(--s-2); font: 400 var(--fs-sm) / var(--lh-sm) var(--font-sans); color: var(--muted); max-width: 34ch; }
-
-/* Includes cell: dash list in sans, exclusions as a mono footnote line, then the price note as a left-aligned .sub line (mono 13px, muted) */
-.page-pricing .sheet td.includes .pkg__list { list-style: none; }
-.page-pricing .sheet td.includes .pkg__list li { position: relative; padding-left: var(--s-4); max-width: 52ch; }
-.page-pricing .sheet td.includes .pkg__list li + li { margin-top: var(--s-1); }
-.page-pricing .sheet td.includes .pkg__list li::before { content: "—"; position: absolute; left: 0; font-family: var(--font-mono); color: var(--muted); }
-.page-pricing .sheet td.includes .pkg__excl { margin-top: var(--s-3); font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--muted); max-width: 52ch; }
-.page-pricing .sheet td.includes .pkg__excl .k { font-weight: 500; font-size: var(--fs-2xs); letter-spacing: var(--ls-label); text-transform: uppercase; }
-.page-pricing .sheet td.includes .sub { margin-top: var(--s-3); max-width: 60ch; }
-
-/* Delivery: a timeline is data, so mono */
-.page-pricing .sheet td.delivery { font: 400 var(--fs-xs) / var(--lh-xs) var(--font-mono); color: var(--ink); }
-
-/* Price cell: .val holds [From] + figure (the two never separate); only the unit sits under it. The note lives in the Includes cell. */
-.page-pricing .sheet td.num .val { display: block; }
-.page-pricing .sheet td.num .unit { display: block; margin-top: var(--s-1); font: 400 var(--fs-2xs) / var(--lh-2xs) var(--font-mono); color: var(--muted); }
-
-/* Request link: a 44px target in every layout. The arrow gap is a flex gap, so it matches "All work →" in prose. */
-.page-pricing .sheet td.cta a { display: inline-flex; align-items: center; column-gap: .35em; min-height: var(--control-h); white-space: nowrap; }
-.page-pricing .sheet td.cta a::after { margin-left: 0; }
-
-/* ---------- Mobile ledger (< 768px) ---------- */
-@media (max-width: 767px) {
-  /* Price line reads "ONE-OFF ......... From MUR 55,000": the label is the billing basis, so the unit line is not repeated */
-  .page-pricing .sheet td.num { flex-wrap: wrap; }
-  .page-pricing .sheet td.num .val { display: inline; white-space: nowrap; }
-  .page-pricing .sheet td.num .unit { display: none; }
-  /* The price note is rendered here on the ledger only: a full-width, left-aligned line under the figure */
-  .page-pricing .sheet td.num .sub { order: 3; flex-basis: 100%; margin: var(--s-1) 0 0; text-align: left; }
-
-  /* Includes: a native details/summary per package so the ledger stays scannable (name, best for, delivery, price, Request) */
-  .page-pricing .sheet td.includes { padding-block: 0; }
-  .page-pricing .sheet td.includes::before { content: none; }
-  .page-pricing .sheet td.includes .pkg__more summary {
-    display: grid; grid-template-columns: 1fr 2rem; align-items: center;
-    min-height: var(--control-h); padding-block: var(--s-2); cursor: pointer; list-style: none;
-    font: 500 var(--fs-2xs) / 1 var(--font-mono); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted);
-  }
-  .page-pricing .sheet td.includes .pkg__more summary::-webkit-details-marker { display: none; }
-  .page-pricing .sheet td.includes .pkg__more summary::after { content: "+"; font: 400 var(--fs-md) / 1 var(--font-mono); color: var(--muted); text-align: right; }
-  .page-pricing .sheet td.includes .pkg__more[open] summary::after { content: "−"; }
-  .page-pricing .sheet td.includes .pkg__more summary:hover { color: var(--ink); }
-  .page-pricing .sheet td.includes .pkg__more summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .page-pricing .sheet td.includes .pkg__more .pkg__list { margin-top: var(--s-2); padding-bottom: var(--s-2); }
-  .page-pricing .sheet td.includes .pkg__more .pkg__excl { padding-bottom: var(--s-2); }
-
-  .page-pricing .sheet td.pkg .pkg__for { max-width: var(--measure); }
-  .page-pricing .sheet td.delivery { padding-top: var(--s-3); }
-}
-
-/* ---------- Notes: a dash list at body size ---------- */
-.page-pricing .pricing-notes { list-style: none; }
-.page-pricing .pricing-notes li { position: relative; padding-left: var(--s-5); max-width: var(--measure); }
-.page-pricing .pricing-notes li + li { margin-top: var(--s-4); }
-.page-pricing .pricing-notes li::before { content: "—"; position: absolute; left: 0; font-family: var(--font-mono); color: var(--muted); }
-
-/* ---------- Standard terms reuse .steps; the empty third column at >= 1024px is left as the spec draws it ---------- */
-.page-pricing .steps h4 { max-width: 40ch; }
+.page-pricing .pricing-jump { margin-top: var(--s-6); }
+.page-pricing .pricing-jump .small { margin-bottom: var(--s-3); color: var(--c-on-dark-muted); }
+.page-pricing .pricing-jump .tag-row { list-style: none; }
+.page-pricing .pkg-group { scroll-margin-top: var(--nav-h); }
+.page-pricing #package-index { scroll-margin-top: calc(var(--nav-h) + var(--s-6)); }
+.page-pricing .pkg-group__back { margin-top: var(--s-6); font-size: var(--fs-sm); }
+.page-pricing .pkg-group__back a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.page-pricing .terms-card h3 { font-size: var(--fs-md); }
+.page-pricing .pricing-notes li { color: var(--c-body); }

@@ -62,7 +62,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['React', 'TypeScript', 'NestJS', 'Node.js', 'PostgreSQL', 'Cloudflare', 'Azure', 'Google Analytics', 'Google Search Console'],
     priceFrom: 'From MUR 20,000',
-    typicalTimeline: '2–4 weeks',
+    typicalTimeline: '2 to 4 weeks',
     enquiryKind: 'quote',
     ctaLabel: 'Request a quote',
     faqs: [
@@ -173,7 +173,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['React', 'NestJS', 'TypeScript', 'PostgreSQL', 'MIPS', 'Stripe', 'PayPal', 'Cloudflare', 'Azure'],
     priceFrom: 'From MUR 35,000',
-    typicalTimeline: '4–8 weeks',
+    typicalTimeline: '4 to 8 weeks',
     enquiryKind: 'quote',
     ctaLabel: 'Request a quote',
     faqs: [
@@ -230,7 +230,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['React', 'Angular', 'NestJS', 'Node.js', 'TypeScript', 'C#', '.NET', 'Python', 'PostgreSQL', 'SQL Server', 'Oracle', 'Azure', 'Azure DevOps', 'Docker'],
     priceFrom: 'From MUR 25,000',
-    typicalTimeline: '3–12 weeks',
+    typicalTimeline: '3 to 12 weeks',
     enquiryKind: 'quote',
     ctaLabel: 'Request a scoped quote',
     faqs: [
@@ -284,7 +284,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Flutter', 'Firebase', 'NestJS', 'PostgreSQL', 'Google Maps', 'Stripe', 'Azure'],
     priceFrom: 'From MUR 120,000',
-    typicalTimeline: '8–16 weeks',
+    typicalTimeline: '8 to 16 weeks',
     enquiryKind: 'quote',
     ctaLabel: 'Request a scoped quote',
     faqs: [
@@ -339,7 +339,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['WhatsApp Business API', 'Azure AI', 'Node.js', 'NestJS', 'Python', 'PostgreSQL', 'Google Sheets'],
     priceFrom: 'From MUR 25,000',
-    typicalTimeline: '2–6 weeks',
+    typicalTimeline: '2 to 6 weeks',
     enquiryKind: 'quote',
     ctaLabel: 'Request a quote',
     faqs: [
@@ -394,7 +394,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Azure', 'Azure DevOps', 'Microsoft 365', 'Google Workspace', 'Postman', 'Cypress', 'Selenium'],
     priceFrom: 'MUR 15,000 per day',
-    typicalTimeline: '1–3 days',
+    typicalTimeline: '1 to 3 days',
     enquiryKind: 'quote',
     ctaLabel: 'Book a consulting day',
     faqs: [
@@ -450,7 +450,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Azure', 'Azure DevOps', 'Cloudflare', 'Docker', 'Linux', 'Red Hat', 'PostgreSQL', 'SQL Server', 'Git'],
     priceFrom: 'From MUR 12,000',
-    typicalTimeline: '1–2 weeks',
+    typicalTimeline: '1 to 2 weeks',
     enquiryKind: 'audit',
     ctaLabel: 'Book a cloud review',
     faqs: [
@@ -563,7 +563,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Fortinet', 'Cloudflare', 'Microsoft 365', 'Google Workspace', 'OWASP ZAP', 'Nmap', 'Veracode'],
     priceFrom: 'From MUR 12,000',
-    typicalTimeline: '1–2 weeks',
+    typicalTimeline: '1 to 2 weeks',
     enquiryKind: 'audit',
     ctaLabel: 'Book a security audit',
     faqs: [
@@ -619,7 +619,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Fortinet', 'Cisco Catalyst', 'Cloudflare', 'VLANs', 'VPN'],
     priceFrom: 'From MUR 25,000',
-    typicalTimeline: '1–3 weeks',
+    typicalTimeline: '1 to 3 weeks',
     enquiryKind: 'callback',
     ctaLabel: 'Request a site visit',
     faqs: [
@@ -675,7 +675,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Hikvision', 'Dahua', '3CX', 'WhatsApp Business', 'Fortinet', 'IoT sensors'],
     priceFrom: 'From MUR 15,000',
-    typicalTimeline: '1–3 weeks',
+    typicalTimeline: '1 to 3 weeks',
     enquiryKind: 'callback',
     ctaLabel: 'Request a site visit',
     faqs: [
@@ -731,7 +731,7 @@ export const SERVICES: Service[] = [
     ],
     tools: ['Google Business Profile', 'Google Search Console', 'Google Analytics', 'WhatsApp Business', 'Meta Business Suite'],
     priceFrom: 'From MUR 2,500',
-    typicalTimeline: '1–2 weeks',
+    typicalTimeline: '1 to 2 weeks',
     enquiryKind: 'quote',
     ctaLabel: 'Request a quote',
     faqs: [

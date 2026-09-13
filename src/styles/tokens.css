@@ -1,95 +1,101 @@
-/* GURIB / DATASHEET — design tokens. Source: docs/DESIGN.md §2, pasted as-is.
-   Additions (documented at the bottom of the block) are marked "ADDED". */
+/* Design tokens v2: vibrant gradient and glassmorphism direction. */
 :root {
-  /* ---------- Colour (hex only, no alpha, no gradients) ---------- */
-  --paper:        #F4F3EF; /* page background everywhere, input background, price sheet surface */
-  --band:         #E9E7E0; /* the ONLY alternate background: pricing band, footer, row hover, active sidebar item */
-  --ink:          #121417; /* all headings and body text, strong rules, secondary button border */
-  --muted:        #5F636A; /* secondary text, mono metadata, captions, eyebrows, placeholders (5.44:1 on paper, 4.88:1 on band) */
-  --rule:         #D3D1C9; /* 1px hairlines: section tops, rows, table rows, figure frames. Decorative only, never text. */
-  --edge:         #7E8187; /* input/select/textarea border at rest (3.52:1 on paper, 3.16:1 on band — passes non-text contrast) */
-  --accent:       #A63A0F; /* interactive only: primary button fill, link hover underline, focus ring, active nav, "new" status dot */
-  --accent-hover: #7F2C0B; /* primary button hover fill */
-  --wa:           #0E6B5F; /* WhatsApp only (+ the availability dot): WhatsApp button fill, WhatsApp text links, mobile bar cell */
-  --wa-hover:     #0A5247; /* WhatsApp button hover fill */
-  --error:        #A8281C; /* form validation text/borders, destructive back-office actions. Nothing else. */
-  --on-fill:      #F4F3EF; /* text on --accent / --wa / --error / --ink fills. Never pure white. */
+  /* ---------- Brand colours ---------- */
+  --c-indigo: #4f46e5;
+  --c-violet: #7c3aed;
+  --c-fuchsia: #db2777;
+  --c-cyan: #06b6d4;
+  --c-emerald: #10b981;
+  --c-amber: #f59e0b;
+  --c-wa: #25d366;        /* WhatsApp green */
+  --c-wa-dark: #128c7e;
 
-  /* ---------- Fonts ---------- */
-  --font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+  /* ---------- Neutrals ---------- */
+  --c-ink: #0f172a;       /* headings, primary text on light */
+  --c-body: #334155;      /* body text on light */
+  --c-muted: #64748b;     /* secondary text */
+  --c-line: #e2e8f0;      /* hairlines on light */
+  --c-bg: #f8fafc;        /* page background (light sections) */
+  --c-surface: #ffffff;
+  --c-night: #0b1020;     /* dark sections / hero */
+  --c-night-2: #141a33;
+  --c-on-dark: #f1f5f9;
+  --c-on-dark-muted: #a5b4d5;
 
-  /* ---------- Type scale (size / line-height) ---------- */
-  --fs-2xs:  0.75rem;   --lh-2xs:  1.4;   /* 12px mono eyebrows, table headers, tags, footer legal */
-  --fs-xs:   0.8125rem; --lh-xs:   1.5;   /* 13px mono meta, captions, form labels, footnotes */
-  --fs-sm:   0.875rem;  --lh-sm:   1.5;   /* 14px nav links, helper text, table cells, back-office UI, button labels */
-  --fs-base: 1rem;      --lh-base: 1.55;  /* 16px body */
-  --fs-read: 1.0625rem; --lh-read: 1.6;   /* 17px long-form prose (case studies, about, service scope) */
-  --fs-md:   1.25rem;   --lh-md:   1.4;   /* 20px lead paragraphs, service row titles, h4 */
-  --fs-lg:   1.625rem;  --lh-lg:   1.25;  /* 26px h3 */
-  --fs-xl:   2.125rem;  --lh-xl:   1.15;  /* 34px h2 */
-  --fs-2xl:  2.75rem;   --lh-2xl:  1.08;  /* 44px page h1 */
-  --fs-3xl:  3.5rem;    --lh-3xl:  1.02;  /* 56px home hero h1 at >= 1200px only */
-  --fs-num:  2.5rem;    --lh-num:  1;     /* 40px large mono figures: case metrics, dashboard stats, success ref, mobile ledger totals */
+  /* ---------- Gradients ---------- */
+  --g-brand: linear-gradient(135deg, var(--c-indigo) 0%, var(--c-violet) 45%, var(--c-fuchsia) 100%);
+  --g-brand-soft: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(124, 58, 237, 0.10), rgba(219, 39, 119, 0.10));
+  --g-cool: linear-gradient(135deg, var(--c-cyan) 0%, var(--c-indigo) 100%);
+  --g-warm: linear-gradient(135deg, var(--c-amber) 0%, var(--c-fuchsia) 100%);
+  --g-text: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  --g-night: radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.45), transparent 60%),
+             radial-gradient(900px 500px at 95% 10%, rgba(236, 72, 153, 0.35), transparent 60%),
+             radial-gradient(700px 500px at 50% 110%, rgba(6, 182, 212, 0.30), transparent 60%),
+             var(--c-night);
+  --g-page: radial-gradient(900px 500px at 0% 0%, rgba(99, 102, 241, 0.10), transparent 60%),
+            radial-gradient(800px 500px at 100% 20%, rgba(236, 72, 153, 0.08), transparent 60%),
+            var(--c-bg);
 
-  --ls-tight: -0.015em; /* h1, h2 */
-  --ls-label: 0.08em;   /* mono uppercase eyebrows, table headers, tags */
-  --ls-form:  0.06em;   /* mono uppercase form labels */
+  /* ---------- Glass ---------- */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-dark-bg: rgba(20, 26, 51, 0.55);
+  --glass-dark-border: rgba(255, 255, 255, 0.14);
+  --glass-blur: 18px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 10px 30px -10px rgba(15, 23, 42, 0.18);
+  --shadow-lg: 0 25px 60px -20px rgba(79, 70, 229, 0.35);
+  --shadow-glow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 20px 50px -20px rgba(124, 58, 237, 0.45);
 
-  /* ---------- Spacing (4px base) ---------- */
-  --s-1:  0.25rem;
-  --s-2:  0.5rem;
-  --s-3:  0.75rem;
-  --s-4:  1rem;
-  --s-5:  1.25rem;
-  --s-6:  1.5rem;
-  --s-8:  2rem;
-  --s-10: 2.5rem;
-  --s-12: 3rem;
-  --s-16: 4rem;
-  --s-20: 5rem;
-  --s-24: 6rem;
-  --s-32: 8rem;
+  /* ---------- Type ---------- */
+  --font-display: "Manrope", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-body: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
 
-  /* ---------- Radii ---------- */
-  --radius:     0;    /* public site: everything */
-  --radius-bo:  2px;  /* back-office inputs only */
-  --radius-dot: 50%;  /* the 7px status dot only */
+  --fs-xs: 0.75rem;   --lh-xs: 1.5;
+  --fs-sm: 0.875rem;  --lh-sm: 1.55;
+  --fs-base: 1rem;    --lh-base: 1.65;
+  --fs-md: 1.125rem;  --lh-md: 1.6;
+  --fs-lg: 1.375rem;  --lh-lg: 1.35;
+  --fs-xl: 1.75rem;   --lh-xl: 1.25;
+  --fs-2xl: 2.25rem;  --lh-2xl: 1.15;
+  --fs-3xl: 3rem;     --lh-3xl: 1.08;
+  --fs-hero: clamp(2.25rem, 5vw + 1rem, 4.25rem); --lh-hero: 1.05;
 
-  /* ---------- Borders ---------- */
-  --hairline:  1px solid var(--rule);
-  --strong:    1px solid var(--ink);
-  --edge-line: 1px solid var(--edge);
+  /* ---------- Spacing / shape ---------- */
+  --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem; --s-5: 1.5rem; --s-6: 2rem;
+  --s-7: 3rem; --s-8: 4rem; --s-9: 6rem; --s-10: 8rem;
+  --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px; --r-pill: 999px;
+  --container: 1200px;
+  --container-narrow: 820px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
 
-  /* ---------- Shadows ---------- */
-  --shadow: none; /* there are no shadows. Do not add another token. */
+  /* ---------- Motion ---------- */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t-fast: 160ms;
+  --t-base: 260ms;
+  --t-slow: 600ms;
 
-  /* ---------- Sizes ---------- */
-  --container:    75rem;                       /* 1200px */
-  --gutter:       clamp(1.25rem, 4vw, 3rem);   /* side padding, set once on .container */
-  --col-gap:      1.5rem;
-  --measure:      62ch;                        /* max prose measure */
-  --measure-lead: 52ch;
-  --nav-h:        3.5rem;
-  --sticky-top:   5rem;                        /* nav-h + 1.5rem; top offset of sticky section heads */
-  --control-h:    2.75rem;                     /* 44px: buttons, inputs, selects, nav rows, mobile bar cells */
-  --bo-sidebar:   15rem;
-  --spec-label:   11rem;                       /* label column of <dl class="spec"> (7rem under 768px) */
+  --z-nav: 50; --z-drawer: 60; --z-chat: 70;
+}
 
-  /* ---------- Breakpoints (documentation only: custom properties cannot be used inside @media) ---------- */
-  /* 480px   buttons in CTA rows go full width                                              */
-  /* 768px   4 -> 6 columns; mobile bar hides above; price table switches from ledger to table */
-  /* 1024px  6 -> 12 columns; nav expands; sticky section heads switch on                   */
-  /* 1200px  hero h1 to --fs-3xl; nav shows full WhatsApp number                            */
-
-  /* ---------- Z-index ---------- */
-  --z-skip:   40; /* skip-to-content link */
-  --z-drawer: 30; /* mobile nav drawer */
-  --z-nav:    20; /* sticky nav */
-  --z-bar:    10; /* mobile WhatsApp / quote bar */
-  --z-sticky:  1; /* sticky section heads, back-office sidebar */
-
-  /* ---------- ADDED (not in DESIGN.md §2; derived from §4.2 rule 4) ---------- */
-  --measure-meta: 60ch; /* mono metadata / footnote measure */
-  --measure-side: 28ch; /* marginalia and section-head paragraph measure */
+/* ---------- Added for the component layer (sizes, semantic colours, layers) ---------- */
+:root {
+  --nav-h: 4.5rem;
+  --control-h: 3rem;
+  --control-h-sm: 2.75rem;
+  --measure: 62ch;
+  --measure-lead: 58ch;
+  --c-error: #e11d48;
+  --c-error-soft: rgba(225, 29, 72, 0.10);
+  --c-success: #059669;
+  --c-success-soft: rgba(5, 150, 105, 0.12);
+  --c-info-soft: rgba(79, 70, 229, 0.10);
+  --c-line-strong: #cbd5e1;
+  --c-wa-text: #0a7c5a;          /* WhatsApp green that passes AA as link text on white */
+  --c-wa-ink: #052e16;           /* dark text on the bright WhatsApp button */
+  --z-sticky: 10;
+  --z-skip: 100;
+  --bo-sidebar: 16rem;
 }

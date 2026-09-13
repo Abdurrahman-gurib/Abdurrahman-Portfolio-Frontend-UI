@@ -44,7 +44,7 @@ All copy lives in `src/content/`:
 | `work.ts` | Case studies |
 | `copy.ts` | Page headlines, form labels, footer, SEO, back-office labels |
 
-Design reference: `docs/DESIGN.md`. Optional portrait: drop `public/portrait.jpg` and it appears on the About page.
+Design: gradient + glassmorphism system, tokens in `src/styles/tokens.css`; live chat widget in `src/components/ChatWidget.tsx` (API contract in `docs/CHAT-API.md`). Optional portrait: drop `public/portrait.jpg` and it appears on the About page.
 
 ## Back office
 

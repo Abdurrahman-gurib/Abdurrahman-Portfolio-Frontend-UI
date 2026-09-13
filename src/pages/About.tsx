@@ -4,34 +4,27 @@ import { COPY } from '../content/copy';
 import { ABOUT, AWARDS, CERTIFICATIONS, COMMITMENTS, EDUCATION, TIMELINE } from '../content/about';
 import type { Credential } from '../content/types';
 import { OWNER, whatsappLink } from '../content/site';
-import { AvailabilityLine, Breadcrumb, Button, ContactStrip, DefinitionList, SectionHeader, WhatsAppButton } from '../components';
+import { ContactStrip, CtaBand, DefinitionList, Headline, PageHero, Reveal, SectionHeader, StatChips } from '../components';
 import '../styles/pages/about.css';
 
-const SECTION_INDEX = '06';
-
-/** Compact ruled credential rows: title, issuer, year (mono). */
+/** Credential rows: title, issuer, year. */
 function CredentialList({ items, label }: { items: Credential[]; label: string }) {
   return (
-    <ul className="about__creds" aria-label={label}>
+    <ul className="creds" aria-label={label}>
       {items.map((c) => (
         <li key={`${c.title}-${c.issuer}`}>
           <span>
             <span className="what">{c.title}</span>
             <span className="who">{c.issuer}</span>
           </span>
-          {c.year && <span className="yr">{c.year}</span>}
+          {c.year && <span className="tag">{c.year}</span>}
         </li>
       ))}
     </ul>
   );
 }
 
-/**
- * /about: headline, bio, facts, timeline, credentials, awards, tools, commitments, contact foot (DESIGN.md §7.6).
- * The opening is three grid items in DOM order intro, facts, prose: below 1024px the facts sit directly under the
- * lead so a phone reader gets BASED / EXPERIENCE / LANGUAGES before six paragraphs; at >= 1024px about.css keeps the
- * facts in cols 9–12 beside the text.
- */
+/** /about: headline, bio, facts, timeline, credentials, awards, tools, commitments, call to action. */
 export default function About() {
   useSeo(COPY.seo.about.title, COPY.seo.about.description);
   const [hasPortrait, setHasPortrait] = useState(true);
@@ -39,18 +32,15 @@ export default function About() {
   const S = COPY.about.sections;
 
   return (
-    <div className="container page-about">
-      <section className="section section--first">
-        <Breadcrumb items={[{ label: COPY.about.title }]} />
-        <div className="grid">
-          <div className="hero__main">
-            <span className="eyebrow">
-              <span className="n">{SECTION_INDEX}</span> — {COPY.about.title}
-            </span>
-            <h1 tabIndex={-1}>{COPY.about.headline}</h1>
-            <p className="lead">{COPY.about.lead}</p>
-          </div>
-          <div className="hero__facts about__facts-col">
+    <div className="page-about">
+      <PageHero
+        breadcrumb={[{ label: COPY.about.title }]}
+        eyebrow={COPY.about.title}
+        titleId="about-title"
+        title={<Headline text={COPY.about.headline} words={3} />}
+        lead={COPY.about.lead}
+        aside={
+          <div className="about-aside">
             {hasPortrait && (
               <figure className="fig fig--portrait about__portrait">
                 <img src="/portrait.jpg" alt={COPY.shell.portraitAlt} onError={() => setHasPortrait(false)} />
@@ -59,135 +49,158 @@ export default function About() {
                 </figcaption>
               </figure>
             )}
-            <DefinitionList
-              className="about__facts"
+            <StatChips
               aria-label={`${F.location}, ${F.experience}, ${F.languages}`}
               items={[
-                { term: F.location, detail: ABOUT.location },
-                { term: F.experience, detail: <span className="mono">{ABOUT.yearsExperience}</span> },
-                {
-                  term: F.languages,
-                  detail: ABOUT.languages.map((l) => (
-                    <span className="lines" key={l}>
-                      {l}
-                    </span>
-                  )),
-                },
+                { value: ABOUT.yearsExperience, label: F.experience, grad: true },
+                { value: OWNER.location, label: ABOUT.location },
+                { value: F.languages, label: ABOUT.languages.join(' · '), wide: true },
               ]}
             />
           </div>
-          <div className="about__body">
-            <div className="prose about__prose">
+        }
+      />
+
+      <section className="section band--page" id="bio">
+        <div className="container">
+          <div className="split split--wide">
+            <Reveal className="prose about__prose">
               {ABOUT.bio.map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
-            </div>
-            <div className="about__closing">
+            </Reveal>
+            <Reveal className="card card--dark about-card" delay={100}>
               <p className="italic-line">{COPY.about.closingLine}</p>
-              {/* DESIGN.md §6.4: WhatsApp is the word, the number and the green, never an icon */}
-              <a className="wa-link" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                <span className="word">{COPY.shell.whatsappWord}</span>
-                <span className="num">{OWNER.phoneDisplay}</span>
-              </a>
-            </div>
+              <p className="about-phone">
+                <a className="wa-link" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                  <span className="word">{COPY.shell.whatsappWord}</span>
+                  <span className="num">{OWNER.phoneDisplay}</span>
+                </a>
+              </p>
+              <DefinitionList
+                className="about-card__facts"
+                aria-label={`${F.location}, ${F.experience}, ${F.languages}`}
+                items={[
+                  { term: F.location, detail: ABOUT.location },
+                  { term: F.experience, detail: ABOUT.yearsExperience },
+                  {
+                    term: F.languages,
+                    detail: ABOUT.languages.map((l) => (
+                      <span className="lines" key={l}>
+                        {l}
+                      </span>
+                    )),
+                  },
+                ]}
+              />
+            </Reveal>
           </div>
         </div>
       </section>
 
       <section className="section" id="timeline">
-        <div className="grid">
-          <SectionHeader index={`${SECTION_INDEX}.1`} eyebrow={S.timeline} title={S.timeline} intro={S.timelineIntro} />
-          <div className="section__body">
-            <ol className="about__timeline">
-              {TIMELINE.map((t) => (
-                <li key={`${t.period}-${t.org}`}>
-                  <span className="when">{t.period}</span>
-                  <div>
-                    <h3>{t.role}</h3>
-                    <p className="org">{t.org}</p>
-                    <p>{t.summary}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={S.timeline} title={S.timeline} intro={S.timelineIntro} />
+          </Reveal>
+          <ol className="tl">
+            {TIMELINE.map((t, i) => (
+              <Reveal as="li" key={`${t.period}-${t.org}`} delay={Math.min(i, 3) * 60}>
+                <span className="tl__when">{t.period}</span>
+                <div className="card card--strong tl__body">
+                  <h3>{t.role}</h3>
+                  <p className="tl__org">{t.org}</p>
+                  <p>{t.summary}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </section>
 
-      <section className="section" id="education">
-        <div className="grid">
-          <SectionHeader index={`${SECTION_INDEX}.2`} eyebrow={S.education} title={S.education} intro={S.educationIntro} />
-          <div className="section__body">
-            <div className="about__subgroup">
+      <section className="section band--page" id="education">
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={S.education} title={S.education} intro={S.educationIntro} />
+          </Reveal>
+          <div className="split">
+            <Reveal className="card card--strong">
               <h3>{S.degrees}</h3>
               <CredentialList items={EDUCATION} label={S.degrees} />
-            </div>
-            <div className="about__subgroup">
+            </Reveal>
+            <Reveal className="card card--strong" delay={80}>
               <h3>{S.certifications}</h3>
               <CredentialList items={CERTIFICATIONS} label={S.certifications} />
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      <section className="section" id="awards">
-        <div className="grid">
-          <SectionHeader index={`${SECTION_INDEX}.3`} eyebrow={S.awards} title={S.awards} intro={S.awardsIntro} />
-          <div className="section__body">
-            <ul className="about__awards" aria-label={S.awards}>
-              {AWARDS.map((a) => (
-                <li key={a.title}>
-                  <span>{a.title}</span>
-                  <span className="yr">{a.year}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <section className="section band--dark" id="awards">
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={S.awards} title={S.awards} intro={S.awardsIntro} />
+          </Reveal>
+          <ul className="cards cards--2 awards" aria-label={S.awards}>
+            {AWARDS.map((a, i) => (
+              <Reveal as="li" key={a.title} delay={(i % 2) * 70}>
+                <div className="card card--dark award">
+                  <span className="tag">{a.year}</span>
+                  <p>{a.title}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 
-      <section className="section" id="tools">
-        <div className="grid">
-          <SectionHeader index={`${SECTION_INDEX}.4`} eyebrow={S.tools} title={S.tools} intro={S.toolsIntro} />
-          <div className="section__body">
-            <DefinitionList className="about__tools" aria-label={S.tools} items={ABOUT.tools.map((g) => ({ term: g.group, detail: g.items.join(' · ') }))} />
+      <section className="section band--page" id="tools">
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={S.tools} title={S.tools} intro={S.toolsIntro} />
+          </Reveal>
+          <div className="cards cards--3">
+            {ABOUT.tools.map((g, i) => (
+              <Reveal key={g.group} delay={(i % 3) * 70}>
+                <div className="card tools-card">
+                  <span className="card__accent" aria-hidden="true" />
+                  <h3>{g.group}</h3>
+                  <ul className="tag-row mt-4">
+                    {g.items.map((item) => (
+                      <li className="tag" key={item}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="section" id="commitments">
-        <div className="grid">
-          <SectionHeader index={`${SECTION_INDEX}.5`} eyebrow={S.commitments} title={S.commitments} intro={S.commitmentsIntro} />
-          <div className="section__body">
-            <ol className="about__principles">
-              {COMMITMENTS.map((c) => (
-                <li key={c.title}>
-                  <div>
-                    <h3>{c.title}</h3>
-                    <p>{c.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+        <div className="container">
+          <Reveal>
+            <SectionHeader eyebrow={S.commitments} title={S.commitments} intro={S.commitmentsIntro} />
+          </Reveal>
+          <div className="cards cards--3">
+            {COMMITMENTS.map((c, i) => (
+              <Reveal key={c.title} delay={(i % 3) * 70}>
+                <div className="card card--strong principle">
+                  <span className="card__accent" aria-hidden="true" />
+                  <h3>{c.title}</h3>
+                  <p className="mt-2">{c.body}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="section" id="contact">
-        <div className="grid">
-          <SectionHeader index="07" eyebrow={COPY.contact.title} title={COPY.home.contactTitle} intro={COPY.home.contactIntro} />
-          <div className="section__body">
-            <div className="btn-row">
-              <Button as="link" to="/contact" variant="primary">
-                {COPY.nav.cta}
-              </Button>
-              <WhatsAppButton />
-            </div>
-            <AvailabilityLine />
-            <ContactStrip className="mt-8" />
-          </div>
-        </div>
-      </section>
+      <CtaBand id="contact" eyebrow={COPY.contact.title} title={COPY.home.contactTitle} body={COPY.home.contactIntro}>
+        <ContactStrip className="mt-6" />
+      </CtaBand>
     </div>
   );
 }

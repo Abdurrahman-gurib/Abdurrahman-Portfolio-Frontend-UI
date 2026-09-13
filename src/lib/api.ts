@@ -106,7 +106,7 @@ export interface EnquiryInput {
   website?: string;
   message: string;
   sourcePage?: string;
-  companyWebsiteUrl?: string; // honeypot — leave empty
+  companyWebsiteUrl?: string; // honeypot, leave empty
 }
 
 export interface EnquiryResult {
@@ -164,3 +164,82 @@ export interface EnquiryDetail {
   notes: EnquiryNote[];
   events: EnquiryEvent[];
 }
+
+// ---- Live chat (docs/CHAT-API.md) ----
+
+export type ChatSender = 'visitor' | 'owner' | 'bot';
+export type ConversationStatus = 'open' | 'closed';
+
+export interface ChatMessage {
+  id: number;
+  sender: ChatSender;
+  body: string;
+  createdAt: string;
+}
+
+export interface ChatStartInput {
+  name: string;
+  email: string;
+  message?: string;
+  page?: string;
+}
+
+export interface ChatStartResult {
+  conversationId: number;
+  token: string;
+  messages: ChatMessage[];
+}
+
+export interface ChatPollResult {
+  status: ConversationStatus;
+  messages: ChatMessage[];
+}
+
+export interface Conversation {
+  id: number;
+  name: string;
+  email: string;
+  status: ConversationStatus;
+  page: string | null;
+  unreadForOwner: number;
+  lastMessageAt: string;
+  lastMessagePreview: string;
+  createdAt: string;
+}
+
+export interface ConversationList {
+  items: Conversation[];
+  total: number;
+  page: number;
+  pageSize: number;
+  unread: number;
+}
+
+export interface ConversationDetail {
+  conversation: Conversation;
+  messages: ChatMessage[];
+}
+
+/** Public chat endpoints used by the widget. The visitor is identified by the per-conversation token. */
+export const chatApi = {
+  start: (input: ChatStartInput) => api.post<ChatStartResult>('/api/chat/start', input),
+  send: (conversationId: number, token: string, body: string) =>
+    api.post<{ messages: ChatMessage[] }>(`/api/chat/${conversationId}/messages`, { token, body }),
+  poll: (conversationId: number, token: string, after?: number) => {
+    const qs = new URLSearchParams({ token });
+    if (after !== undefined) qs.set('after', String(after));
+    return api.get<ChatPollResult>(`/api/chat/${conversationId}/messages?${qs.toString()}`);
+  },
+};
+
+/** Back-office chat endpoints (cookie session). */
+export const adminChatApi = {
+  list: (status: ConversationStatus | 'all', page: number, pageSize: number) =>
+    api.get<ConversationList>(`/api/admin/conversations?status=${status}&page=${page}&pageSize=${pageSize}`),
+  unread: () => api.get<{ unread: number }>('/api/admin/conversations/unread'),
+  get: (id: number | string) => api.get<ConversationDetail>(`/api/admin/conversations/${encodeURIComponent(String(id))}`),
+  reply: (id: number, body: string) => api.post<{ message: ChatMessage }>(`/api/admin/conversations/${id}/reply`, { body }),
+  setStatus: (id: number, status: ConversationStatus) =>
+    api.patch<{ conversation: Conversation }>(`/api/admin/conversations/${id}`, { status }),
+  remove: (id: number) => api.delete<{ ok: true }>(`/api/admin/conversations/${id}`),
+};

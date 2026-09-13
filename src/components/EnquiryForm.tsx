@@ -14,7 +14,7 @@ import { Notice } from './Notice';
 /*
  * The enquiry form (DESIGN.md §6.6, §6.7, §7.7, §9.12): the segmented "I need" control, the fields, the error summary
  * and the "Received" success state, posting to POST /api/enquiries. It sits at the foot of every public page inside the
- * 07 — Contact section body, pre-set to the page's context, and is the whole form column on /contact.
+ * contact section body, pre-set to the page context, and is the whole form column on /contact.
  *
  *   <EnquiryForm kind="quote" />                                   home, pricing, work, case studies
  *   <EnquiryForm kind="audit" service="cyber-security" />          security and network service pages

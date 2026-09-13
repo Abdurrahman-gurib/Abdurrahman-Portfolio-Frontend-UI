@@ -1,0 +1,89 @@
+/* Live chat in the back office: the Messages list (.page-bo-conversations), one conversation (.page-bo-conversation),
+   the sidebar unread badge (.bo-side .conv-badge) and the dashboard line (.bo-unread-line). Tokens from tokens.css v2. */
+
+/* ---------- Unread badge (sidebar, tabs, table) ---------- */
+.conv-badge {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 1.375rem; height: 1.375rem; padding: 0 0.4rem;
+  border-radius: var(--r-pill, 999px); background: var(--g-brand); color: #fff;
+  font: 700 var(--fs-xs, 0.75rem) / 1 var(--font-display, inherit); letter-spacing: 0;
+}
+.bo-side a .conv-badge { margin-left: auto; }
+.bo-unread-line { margin-bottom: var(--s-6, 2rem); }
+
+/* Status dots for open / closed (the enquiry statuses live in components.css) */
+.status--open::before { background: var(--c-emerald, #10b981); }
+.status--closed { color: var(--c-muted, #64748b); }
+.status--closed::before { background: transparent; box-shadow: inset 0 0 0 1px var(--c-muted, #64748b); }
+
+/* ---------- List ---------- */
+.page-bo-conversations .conv-tabs { display: flex; flex-wrap: wrap; gap: var(--s-2, 0.5rem); margin-bottom: var(--s-6, 2rem); }
+.page-bo-conversations .conv-tabs a {
+  display: inline-flex; align-items: center; gap: var(--s-2, 0.5rem); min-height: 2.25rem; padding: 0 var(--s-4, 1rem);
+  border-radius: var(--r-pill, 999px); border: 1px solid var(--c-line, #e2e8f0); text-decoration: none;
+  color: var(--c-body, #334155); font: 600 var(--fs-sm, 0.875rem) / 1 var(--font-display, inherit);
+}
+.page-bo-conversations .conv-tabs a:hover { border-color: var(--c-ink, #0f172a); color: var(--c-ink, #0f172a); }
+.page-bo-conversations .conv-tabs a[aria-current="page"] { background: var(--g-brand); border-color: transparent; color: #fff; }
+.page-bo-conversations .conv-tabs a[aria-current="page"] .conv-badge { background: rgba(255, 255, 255, 0.25); }
+.page-bo-conversations .conv-tabs a:focus-visible { outline: 2px solid var(--c-indigo, #4f46e5); outline-offset: 2px; }
+
+.page-bo-conversations .notice { margin-bottom: var(--s-6, 2rem); }
+.page-bo-conversations .table-wrap { position: relative; }
+.page-bo-conversations .conv-table { min-width: 44rem; }
+.page-bo-conversations .conv-table thead th { white-space: nowrap; }
+.page-bo-conversations .table--rows tbody tr { cursor: pointer; }
+.page-bo-conversations td.who { white-space: nowrap; }
+.page-bo-conversations td.who .name { display: block; font-weight: 600; color: var(--c-ink, #0f172a); text-decoration: none; max-width: 18rem; overflow: hidden; text-overflow: ellipsis; }
+.page-bo-conversations td.who .name:hover { text-decoration: underline; }
+.page-bo-conversations td.who .sub { display: block; color: var(--c-muted, #64748b); font-size: var(--fs-xs, 0.75rem); max-width: 18rem; overflow: hidden; text-overflow: ellipsis; }
+.page-bo-conversations tr.is-unread td.who .name { color: var(--c-indigo, #4f46e5); }
+.page-bo-conversations td.col-page { font-family: var(--font-mono, monospace); font-size: var(--fs-xs, 0.75rem); color: var(--c-muted, #64748b); white-space: nowrap; max-width: 12rem; overflow: hidden; text-overflow: ellipsis; }
+.page-bo-conversations td.preview { max-width: 24rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.page-bo-conversations td.received { white-space: nowrap; }
+.page-bo-conversations td.received time { white-space: nowrap; }
+.page-bo-conversations th.num, .page-bo-conversations td.num { text-align: right; }
+.page-bo-conversations td.open { text-align: right; padding-right: 0; white-space: nowrap; }
+.page-bo-conversations td.open a { display: inline-flex; align-items: center; min-height: 1.75rem; }
+.page-bo-conversations .table-foot .btn-row { gap: var(--s-2, 0.5rem); }
+.page-bo-conversations .table-foot .btn-row .btn { width: auto; }
+.page-bo-conversations .empty .btn { margin-top: var(--s-5, 1.5rem); }
+/* Under 768px the row is Name · Last activity · Unread · Open; page and preview are on the detail page */
+@media (max-width: 767px) {
+  .page-bo-conversations .col-page,
+  .page-bo-conversations .col-last { display: none; }
+  .page-bo-conversations .conv-table { min-width: 30rem; }
+}
+
+/* ---------- Detail ---------- */
+.page-bo-conversation .head { margin-bottom: var(--s-6, 2rem); }
+.page-bo-conversation .head h1 { margin-bottom: var(--s-3, 0.75rem); max-width: none; }
+.page-bo-conversation .head .cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2, 0.5rem) var(--s-5, 1.5rem); font-size: var(--fs-sm, 0.875rem); color: var(--c-muted, #64748b); }
+.page-bo-conversation .head .cluster a { color: var(--c-ink, #0f172a); overflow-wrap: anywhere; }
+.page-bo-conversation .head .actions { margin-top: var(--s-5, 1.5rem); }
+.page-bo-conversation .notice { margin-bottom: var(--s-6, 2rem); }
+.page-bo-conversation .conv-section { max-width: 52rem; }
+.page-bo-conversation h2 { font: 600 var(--fs-lg, 1.375rem) / var(--lh-lg, 1.35) var(--font-display, inherit); margin-bottom: var(--s-4, 1rem); }
+
+.page-bo-conversation .conv-thread {
+  max-height: 60vh; min-height: 8rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--s-4, 1rem); margin-bottom: var(--s-6, 2rem);
+  border-radius: var(--r-lg, 20px); background: var(--glass-bg, rgba(255, 255, 255, 0.62)); border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.55)); box-shadow: var(--shadow-sm);
+}
+.conv-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s-3, 0.75rem); }
+.conv-msg { display: flex; flex-direction: column; align-items: flex-start; max-width: 72%; gap: 2px; }
+.conv-msg--owner { align-self: flex-end; align-items: flex-end; }
+.conv-msg__who { font: 600 var(--fs-xs, 0.75rem) / 1.4 var(--font-display, inherit); color: var(--c-muted, #64748b); padding-inline: var(--s-2, 0.5rem); }
+.conv-bubble {
+  padding: 0.6rem 0.9rem; border-radius: var(--r-md, 14px); white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-sm, 0.875rem); line-height: var(--lh-sm, 1.55);
+  background: var(--c-surface, #fff); border: 1px solid var(--c-line, #e2e8f0); color: var(--c-ink, #0f172a); border-bottom-left-radius: 4px; box-shadow: var(--shadow-sm);
+}
+.conv-msg--owner .conv-bubble { background: var(--g-brand); color: #fff; border-color: transparent; border-bottom-left-radius: var(--r-md, 14px); border-bottom-right-radius: 4px; }
+.conv-msg--bot .conv-bubble { background: var(--g-brand-soft, rgba(99, 102, 241, 0.08)); }
+.conv-msg--pending { opacity: 0.6; }
+.conv-msg__time { font-size: var(--fs-xs, 0.75rem); color: var(--c-muted, #64748b); padding-inline: var(--s-2, 0.5rem); }
+@media (max-width: 767px) {
+  .conv-msg { max-width: 90%; }
+}
+
+.page-bo-conversation .conv-reply .field { margin-bottom: var(--s-4, 1rem); }
+.page-bo-conversation .conv-reply .field textarea { min-height: 6rem; }
+.page-bo-conversation .conv-back { margin-top: var(--s-8, 4rem); }

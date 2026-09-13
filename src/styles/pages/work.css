@@ -1,55 +1,13 @@
-/* Work index (/work) and case-study detail (/work/:slug). Source: DESIGN.md §7.5, §6.9, §6.11.
-   Every selector is scoped to .page-work. Tokens only; no new colours, radius, shadow or motion. */
+/* Work index (/work) and case-study detail (/work/:slug). */
 
-/* ---------- Opening section: note as marginalia in cols 9–12 ---------- */
-.page-work .hero__facts .aside { margin-top: 0; }
+.page-work .work-note { align-self: start; }
+.page-work .work-note p { font-size: var(--fs-sm); line-height: var(--lh-sm); }
 
-/* ---------- Entry list: each entry is its own 12-col sub-grid, ruled below ---------- */
-.page-work .work__section { padding-block: 0; }
-.page-work .work__list { list-style: none; }
-.page-work .work__entry { padding-block: var(--s-12); border-bottom: var(--hairline); }
-.page-work .work__entry:last-child { border-bottom: 0; }
-@media (max-width: 767px) { .page-work .work__entry { padding-block: var(--s-10); } }
-
-/* DOM order is index, title, dossier, text. Below 1024px everything stacks in that order (title before the
-   dossier); at >= 1024px the index and dossier sit in cols 1–3, the title and text in cols 5–12, on two grid rows. */
-.page-work .work__index,
-.page-work .work__title,
-.page-work .work__dossier,
-.page-work .work__body { grid-column: 1 / -1; }
-.page-work .work__index { margin-bottom: var(--s-4); }
-.page-work .work__dossier { margin-block: var(--s-6) var(--s-8); }
+.page-work .case-main > .reveal + .reveal { margin-top: clamp(2rem, 4vw, 3rem); }
+.page-work .case-main .section__head { margin-bottom: var(--s-4); }
+.page-work .case-main .prose { font-size: var(--fs-md); line-height: var(--lh-md); color: var(--c-body); }
+.page-work .case-side { align-self: start; }
+.page-work .case-side h3 { font-size: var(--fs-md); }
 @media (min-width: 1024px) {
-  .page-work .work__index { grid-column: 1 / span 3; grid-row: 1; margin-bottom: 0; }
-  .page-work .work__title { grid-column: 5 / -1; grid-row: 1; margin-bottom: var(--s-4); }
-  .page-work .work__dossier { grid-column: 1 / span 3; grid-row: 2; margin: 0; }
-  .page-work .work__body { grid-column: 5 / -1; grid-row: 2; }
-  /* The dossier cell is ~3 columns wide: a 6.5rem label column (CONTEXT / PERIOD / STACK) leaves the values room to read. */
-  .page-work .work__dossier .spec { grid-template-columns: 6.5rem 1fr; }
+  .page-work .case-side { position: sticky; top: calc(var(--nav-h) + var(--s-5)); }
 }
-.page-work .work__dossier .spec dt, .page-work .hero__facts .spec dt { overflow-wrap: anywhere; }
-
-/* Title links: ink, no underline until hover (the h3 keeps its size and weight) */
-.page-work .work__title { max-width: 26ch; }
-.page-work .work__title a { text-decoration: none; }
-.page-work .work__title a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: .18em; text-decoration-thickness: 1px; }
-
-/* Labelled paragraphs: mono run-in label, sans body */
-.page-work .work__text { margin-top: 0; }
-.page-work .work__text > * + * { margin-top: var(--s-4); }
-.page-work .work__text p { max-width: var(--measure); }
-.page-work .work__label { font: 500 var(--fs-2xs) / 1 var(--font-mono); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); margin-right: var(--s-3); white-space: nowrap; }
-
-/* Facts: a small tight spec list under the text */
-.page-work .work__facts { margin-top: var(--s-8); max-width: var(--measure); }
-
-/* "Read the case study →": text link with a 44px tall hit area */
-.page-work .work__more { display: inline-block; margin-top: var(--s-6); padding-block: var(--s-3); }
-
-/* ---------- Case-study detail ---------- */
-.page-work .case__meta { margin-top: var(--s-4); }
-.page-work .case__prose > * + * { margin-top: var(--s-4); }
-.page-work .case__stack dd { font-size: var(--fs-base); }
-
-/* Not-found state (unknown slug) */
-.page-work .case__missing .btn-row { margin-top: var(--s-8); }

@@ -4,8 +4,8 @@ import { COPY } from '../content/copy';
 import { AvailabilityLine } from './AvailabilityLine';
 import { ContactLadder } from './ContactLadder';
 import { EnquiryForm } from './EnquiryForm';
+import { Reveal } from './Reveal';
 import { SectionHeader } from './SectionHeader';
-import { sectionLabel } from './numbering';
 
 export interface ContactSectionProps {
   /** Pre-sets the segmented "I need" control: quote (default), audit (security and network pages), callback (about). */
@@ -16,47 +16,40 @@ export interface ContactSectionProps {
   package?: string;
   /** Section title. Defaults to the home page's "Tell me what you need". */
   title?: string;
-  /** Short muted line under the title. Defaults to the home page's contact intro. */
+  /** Short line under the title. Defaults to the home page's contact intro. */
   intro?: string;
   /** Pre-filled WhatsApp opening message for the ladder link and button. */
   whatsappMessage?: string;
   /** Recorded with the enquiry. Defaults to the current path and query. */
   sourcePage?: string;
-  /** Anything else that belongs in this section (a related link, a short FAQ), rendered under the form in cols 5–12. */
+  /** Anything else that belongs in this section (a related link, a short FAQ), rendered under the form. */
   children?: ReactNode;
   className?: string;
 }
 
 /**
- * 07 — Contact, the foot of every public page except /contact (DESIGN.md §7, §9.12): head in cols 1–3, the contact
- * ladder in cols 4–7, the enquiry form in cols 8–12 with its "I need" control pre-set to the page's context.
- * The form's submit is the page's one primary button, so nothing else in the section is .btn--primary.
- *
- *   <ContactSection />                                        home, /services, /pricing, /work, case studies
- *   <ContactSection kind="audit" service="cyber-security" />  security and network service pages
- *   <ContactSection kind="callback" />                        /about
+ * The contact foot of every public page except /contact: head, the ways to reach me in a glass card,
+ * the enquiry form in a glass card, pre-set to the page's context.
  */
 export function ContactSection({ kind, service, package: pkg, title, intro, whatsappMessage, sourcePage, children, className }: ContactSectionProps) {
   const cls = ['section', 'contact-foot', className ?? ''].filter(Boolean).join(' ');
   return (
     <section className={cls} id="contact" aria-labelledby="contact-title">
-      <div className="grid">
-        <SectionHeader
-          index="07"
-          eyebrow={sectionLabel('07')}
-          title={title ?? COPY.home.contactTitle}
-          intro={intro ?? COPY.home.contactIntro}
-          id="contact-title"
-        >
-          <AvailabilityLine />
-        </SectionHeader>
-        <div className="contact-foot__ladder">
-          <ContactLadder message={whatsappMessage} />
+      <div className="container">
+        <Reveal>
+          <SectionHeader eyebrow={COPY.contact.title} title={title ?? COPY.home.contactTitle} intro={intro ?? COPY.home.contactIntro} id="contact-title">
+            <AvailabilityLine className="mt-4" />
+          </SectionHeader>
+        </Reveal>
+        <div className="contact-foot__grid">
+          <Reveal className="contact-foot__ladder">
+            <ContactLadder message={whatsappMessage} />
+          </Reveal>
+          <Reveal className="contact-foot__form card card--strong card--pad-lg" delay={80}>
+            <EnquiryForm kind={kind} service={service} package={pkg} sourcePage={sourcePage} heading="h3" />
+          </Reveal>
         </div>
-        <div className="contact-foot__form">
-          <EnquiryForm kind={kind} service={service} package={pkg} sourcePage={sourcePage} heading="h3" />
-        </div>
-        {children && <div className="contact-foot__more">{children}</div>}
+        {children && <Reveal className="contact-foot__more">{children}</Reveal>}
       </div>
     </section>
   );

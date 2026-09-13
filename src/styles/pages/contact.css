@@ -1,88 +1,25 @@
-/* Contact page (DESIGN.md §7.7). Grid placements and a few scoped adjustments only; every component comes from the shared files.
-   Desktop (>= 1024px): head cols 1–3 · ladder cols 4–7 (padded so its rules stop a column-gap short of the form) · form cols 8–12.
-   Tablet: head, ladder (cols 1–4), form stacked. Phone: one column. */
+/* Contact page: the ways to reach me and the form, side by side in glass cards. */
 
-/* ---------- Opening section: three columns ---------- */
-.page-contact .contact-head { grid-column: 1 / -1; margin-bottom: 0; }
-.page-contact .contact-head .avail { margin-top: var(--s-6); }
-.page-contact .contact-ladder { grid-column: 1 / -1; margin-top: var(--s-10); min-width: 0; }
-.page-contact .contact-form-col { grid-column: 1 / -1; margin-top: var(--s-12); min-width: 0; }
-@media (min-width: 768px) {
-  .page-contact .contact-ladder { grid-column: 1 / span 4; }
-}
-@media (min-width: 1024px) {
-  .page-contact .contact-head { grid-column: 1 / span 3; }
-  .page-contact .contact-ladder { grid-column: 4 / span 4; margin-top: 0; padding-right: var(--col-gap); }
-  .page-contact .contact-form-col { grid-column: 8 / -1; margin-top: 0; }
-}
-
-/* ---------- Contact ladder (dl.spec) ----------
-   A 6.5rem label column ("REPLY TIME" is the longest key) leaves the value column room for the address and the profile URL.
-   Those values are mono (13px) and carry <wbr> after "@" and "/", so lines break only at natural points, never inside a word. */
-.page-contact .ladder { grid-template-columns: 6.5rem 1fr; }
-.page-contact .ladder dd { min-width: 0; overflow-wrap: normal; }
+.page-contact .contact-ladder { align-self: start; }
+@media (min-width: 1024px) { .page-contact .contact-ladder { position: sticky; top: calc(var(--nav-h) + var(--s-5)); } }
+.page-contact .contact-ladder .kv > div { grid-template-columns: 6.5rem 1fr; }
 .page-contact .contact-ladder__hint { display: block; margin-top: var(--s-1); }
-.page-contact .contact-ladder .btn { margin-top: var(--s-6); }
-
-/* ---------- Form head ---------- */
-.page-contact .contact-form-col h2 { max-width: 24ch; }
-.page-contact .contact-form-intro { margin-top: var(--s-3); margin-bottom: var(--s-8); max-width: var(--measure-lead); }
-
-/* ---------- Error summary above the fields ---------- */
-.page-contact .contact-form .notice { margin-bottom: var(--s-8); }
+.page-contact .contact-form-col h2 { font-size: var(--fs-xl); }
+.page-contact .contact-form-intro { margin-top: var(--s-2); margin-bottom: var(--s-6); }
+.page-contact .contact-form .notice { margin-bottom: var(--s-6); }
 .page-contact .contact-form .notice p + p { margin-top: var(--s-2); }
 
-/* ---------- "I need" segmented control: legend above, cells below, the hint directly under ----------
-   One row of adjoining cells wherever the column is wide enough (DESIGN.md §6.7): tablet, where the form is full width, and
-   >= 1200px, where the five-column form fits the four cells at --s-3 side padding. Cells size to their label and share the
-   remaining width. In the narrow desktop band (1024–1199px) and on phones the same cells fall back to 2 x 2, then one column.
-   Each cell pulls 1px up and left and the container pads 1px, so the cells share hairlines and the outer edge stays whole. */
-.page-contact .contact-kind { margin-bottom: var(--s-6); }
-.page-contact .contact-form .segmented { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 0; padding: 1px 0 0 1px; }
-.page-contact .contact-form .segmented label { margin: -1px 0 0 -1px; padding-inline: var(--s-3); text-align: center; white-space: nowrap; }
-.page-contact .contact-form .segmented + .field__help { margin-top: var(--s-2); }
-@media (max-width: 479px) {
-  .page-contact .contact-form .segmented { grid-template-columns: 1fr; }
-}
-@media (min-width: 768px) and (max-width: 1023px), (min-width: 1200px) {
-  .page-contact .contact-form .segmented { display: flex; flex-wrap: nowrap; }
-  .page-contact .contact-form .segmented label { flex: 1 1 0; min-width: max-content; }
-}
-
-/* Two-up rows only where the column is wide enough (tablet full width, desktop >= 1200px).
-   Paired labels are kept to one line by their wording (copy.ts), so the two controls sit level. */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .page-contact .contact-form .form-row { grid-template-columns: 1fr; }
-}
-
-/* ---------- "Add details (optional)": native details/summary (DESIGN.md §8.2), styled as one ruled row ----------
-   The summary is a 44px row between hairlines with the mono +/− glyph the FAQ uses (§6.16); the fields inside sit under it
-   with block spacing. No background, no radius, no animation. A field error inside keeps the row open (Contact.tsx). */
-.page-contact .contact-more { margin-bottom: var(--s-6); border-top: var(--hairline); border-bottom: var(--hairline); }
-.page-contact .contact-more summary {
-  display: grid; grid-template-columns: 1fr 2rem; align-items: center; column-gap: var(--s-3);
-  min-height: var(--control-h); padding-block: var(--s-3); cursor: pointer; list-style: none;
-  font: 500 var(--fs-sm) / var(--lh-sm) var(--font-sans); color: var(--ink);
-}
+/* "Add details (optional)": native details styled as a soft panel */
+.page-contact .contact-more { margin-bottom: var(--s-5); border: 1px solid var(--c-line); border-radius: var(--r-md); background: rgba(248, 250, 252, 0.7); }
+.page-contact .contact-more summary { display: grid; grid-template-columns: 1fr 1.75rem; align-items: center; column-gap: var(--s-3); min-height: var(--control-h); padding: var(--s-3) var(--s-4); cursor: pointer; list-style: none; font: 600 var(--fs-sm) / var(--lh-sm) var(--font-body); color: var(--c-ink); border-radius: var(--r-md); }
 .page-contact .contact-more summary::-webkit-details-marker { display: none; }
-.page-contact .contact-more summary::after { content: "+"; grid-column: 2; grid-row: 1 / span 2; font: 400 var(--fs-md) / 1 var(--font-mono); color: var(--muted); text-align: right; }
-.page-contact .contact-more[open] summary::after { content: "−"; }
-.page-contact .contact-more summary:hover > span:first-child { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: .18em; text-decoration-thickness: 1px; }
-.page-contact .contact-more summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.page-contact .contact-more summary::after { content: ""; grid-column: 2; grid-row: 1 / span 2; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--g-brand-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 3v10M3 8h10' fill='none' stroke='%234f46e5' stroke-width='2' stroke-linecap='round'/></svg>") center / 60% no-repeat; transition: transform var(--t-base) var(--ease); }
+.page-contact .contact-more[open] summary::after { transform: rotate(45deg); }
+.page-contact .contact-more summary:hover { color: var(--c-indigo); }
+.page-contact .contact-more summary:focus-visible { outline: 2px solid var(--c-indigo); outline-offset: 2px; }
 .page-contact .contact-more__hint { display: block; grid-column: 1; font-weight: 400; max-width: 52ch; }
-.page-contact .contact-more__body { padding-top: var(--s-6); }
+.page-contact .contact-more__body { padding: var(--s-4) var(--s-4) 0; border-top: 1px solid var(--c-line); }
 .page-contact .contact-more__body > .field:last-child,
-.page-contact .contact-more__body > .form-row:last-child > .field:last-child { margin-bottom: var(--s-2); }
+.page-contact .contact-more__body > .form-row:last-child > .field:last-child { margin-bottom: var(--s-4); }
 
-/* ---------- Submit row: the one primary button, the privacy line beside it ---------- */
-.page-contact .form-foot { margin-top: var(--s-2); align-items: flex-start; }
-.page-contact .form-foot .note { flex: 1 1 16rem; margin: 0; padding-top: var(--s-3); }
-@media (max-width: 479px) {
-  .page-contact .form-foot .btn { width: 100%; }
-  .page-contact .form-foot .note { padding-top: 0; }
-}
-
-/* ---------- Success state ---------- */
-.page-contact .form-success h3[tabindex="-1"]:focus { outline: none; } /* programmatic focus only; the heading is not interactive */
-.page-contact .form-success .btn-row { align-items: center; }
-.page-contact .form-success .link-btn { display: inline-flex; align-items: center; min-height: var(--control-h); }
+.page-contact #questions .faq { max-width: 52rem; }

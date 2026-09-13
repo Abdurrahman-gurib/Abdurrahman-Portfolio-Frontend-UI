@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState, type MouseEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { api, ApiError, type Enquiry, type EnquiryStatus, type Stats } from '../../lib/api';
+import { adminChatApi, api, ApiError, type Enquiry, type EnquiryStatus, type Stats } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
 import { formatDateTime, timeAgo, useSeo, useSite } from '../../lib/hooks';
 import { COPY } from '../../content/copy';
 import { SERVICE_BY_SLUG } from '../../content/services';
 import { EmptyState, Notice, PriorityPill, Skeleton, StatusPill, Table } from '../../components';
 import '../../styles/pages/backoffice.css';
+import '../../styles/pages/conversations.css';
 
 const STATUS_ORDER: EnquiryStatus[] = ['new', 'contacted', 'quoted', 'won', 'lost', 'archived'];
 
@@ -49,6 +50,23 @@ export default function Dashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [unreadChats, setUnreadChats] = useState<number | null>(null);
+
+  // Live chat: conversations with unread visitor messages (the line links to the Messages page).
+  useEffect(() => {
+    let alive = true;
+    adminChatApi
+      .unread()
+      .then((r) => {
+        if (alive) setUnreadChats(r.unread);
+      })
+      .catch(() => {
+        /* the stats notice above covers a failing session; the line simply stays hidden */
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -90,6 +108,14 @@ export default function Dashboard() {
         </Notice>
       )}
 
+      {unreadChats !== null && (
+        <p className="meta bo-unread-line">
+          <Link className="link-arrow" to="/backoffice/conversations">
+            {COPY.chat.backoffice.unreadLine.replace('{count}', String(unreadChats))}
+          </Link>
+        </p>
+      )}
+
       {loading && !stats ? (
         <Skeleton lines={8} label={bo.loadingEnquiries} />
       ) : stats ? (
@@ -119,7 +145,7 @@ export default function Dashboard() {
 
           <div className="avail-row">
             <p className={availClass}>
-              {COPY.shell.availabilityLabel} — {site.settings.availabilityNote} · {COPY.shell.availabilityReplies} {site.settings.responseTime}
+              {COPY.shell.availabilityLabel}: {site.settings.availabilityNote} · {COPY.shell.availabilityReplies} {site.settings.responseTime}
             </p>
             <Link className="link-arrow" to="/backoffice/settings">
               {bo.editAvailability}

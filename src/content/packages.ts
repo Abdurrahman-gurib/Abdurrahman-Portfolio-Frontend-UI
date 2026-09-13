@@ -42,7 +42,7 @@ export const PACKAGES: Package[] = [
     price: 'MUR 8,000',
     priceUnit: 'one-off',
     bestFor: 'You already have a website and a few things on it are broken or wrong.',
-    delivery: '3–5 working days',
+    delivery: '3 to 5 working days',
     includes: [
       'Up to three agreed issues fixed, for example broken links or forms, placeholder text, a mobile layout problem, or opening hours and prices that do not match',
       'Small text and image changes on the pages I touch',
@@ -64,7 +64,7 @@ export const PACKAGES: Package[] = [
     price: 'MUR 15,000',
     priceUnit: 'one-off',
     bestFor: 'Your site works but the main pages look dated or still carry template wording.',
-    delivery: '1–2 weeks',
+    delivery: '1 to 2 weeks',
     includes: [
       'Up to three existing pages reworked with your approved text and photos',
       'One enquiry form, rebuilt or added, with email notification to you',
@@ -87,7 +87,7 @@ export const PACKAGES: Package[] = [
     price: 'MUR 20,000',
     priceUnit: 'one-off',
     bestFor: 'A small business or sole trader that needs a clear, professional site and has nothing online yet, or only a Facebook page.',
-    delivery: '2–3 weeks',
+    delivery: '2 to 3 weeks',
     includes: [
       'Up to four pages, for example home, services, about and contact',
       'Mobile-friendly layout, tested on phones, tablets and desktop',
@@ -112,7 +112,7 @@ export const PACKAGES: Package[] = [
     price: 'MUR 30,000',
     priceUnit: 'one-off',
     bestFor: 'An established business that wants a site to bring in enquiries, quotations or booking requests every week.',
-    delivery: '3–4 weeks',
+    delivery: '3 to 4 weeks',
     includes: [
       'Up to six pages',
       'Photo gallery with up to 30 items',
@@ -138,9 +138,9 @@ export const PACKAGES: Package[] = [
     price: 'MUR 35,000',
     priceUnit: 'one-off',
     bestFor: 'Suppliers, wholesalers, furniture makers and trades that sell on quotation rather than at a fixed online price.',
-    delivery: '4–5 weeks',
+    delivery: '4 to 5 weeks',
     includes: [
-      '20–30 products or services with photos, descriptions and options',
+      '20 to 30 products or services with photos, descriptions and options',
       'Quotation-request basket: customers pick items, add quantities and send one request',
       'Admin view where you see and manage the requests',
       'Email notification to you and acknowledgement to the customer',
@@ -163,7 +163,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Final price confirmed after a scoping call',
     bestFor: 'You want customers to order and pay online, with delivery or pick-up handled on the site.',
-    delivery: '5–8 weeks',
+    delivery: '5 to 8 weeks',
     includes: [
       'Product catalogue with categories, variants and stock',
       'Cart and checkout',
@@ -257,7 +257,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Optional support MUR 3,500 per month',
     bestFor: 'You or your staff retype the same enquiry into WhatsApp, email and a spreadsheet, and things get missed.',
-    delivery: '2–3 weeks',
+    delivery: '2 to 3 weeks',
     includes: [
       'One workflow connecting two systems, for example website form to WhatsApp, email and a Google Sheet',
       'Automatic acknowledgement to the customer',
@@ -280,7 +280,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Optional support MUR 3,000 per month',
     bestFor: 'You already use a booking tool or want to take payments, and it needs to work properly on your website.',
-    delivery: '2–4 weeks',
+    delivery: '2 to 4 weeks',
     includes: [
       'Connect one existing booking tool or one payment gateway to your website',
       'Booking or payment flow embedded so customers do not leave your site',
@@ -303,7 +303,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Optional support MUR 4,000 per month',
     bestFor: 'You make decisions from spreadsheets that someone updates by hand, and you want the numbers in one place.',
-    delivery: '3–5 weeks',
+    delivery: '3 to 5 weeks',
     includes: [
       'Reporting dashboard built from one approved data source, such as a spreadsheet, database or export',
       'Data validation so bad entries are flagged rather than hidden',
@@ -326,7 +326,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Optional support MUR 5,000 per month',
     bestFor: 'You get the same questions on WhatsApp or your website all day and want faster replies without losing control of what is said.',
-    delivery: '4–6 weeks',
+    delivery: '4 to 6 weeks',
     includes: [
       'WhatsApp or website assistant that answers only from content you have approved',
       'Staff-reviewed mode to start: the assistant drafts, your team sends',
@@ -350,7 +350,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Scoped quote after a requirements session',
     bestFor: 'Your process has outgrown spreadsheets and off-the-shelf tools, and you need software built around how you work.',
-    delivery: '6–12 weeks',
+    delivery: '6 to 12 weeks',
     includes: [
       'Requirements sessions and a written scope you sign off before build',
       'Portals, inventory, quotation, booking or internal tools, built in React, NestJS or .NET',
@@ -374,7 +374,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Scoped quote after a requirements session',
     bestFor: 'You need an app your customers or staff will use daily, on both Android and iPhone, from one codebase.',
-    delivery: '8–14 weeks',
+    delivery: '8 to 14 weeks',
     includes: [
       'One Flutter codebase for Android and iOS',
       'Written scope and screen list agreed before build',
@@ -445,7 +445,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Hardware quoted separately',
     bestFor: 'A new office, a move, or a network that has grown by adding cables and nobody knows how it works.',
-    delivery: '1–3 weeks, depending on hardware lead time',
+    delivery: '1 to 3 weeks, depending on hardware lead time',
     includes: [
       'Fortinet firewall configuration: rules, web filtering, VPN for remote staff',
       'Cisco Catalyst switch configuration',
@@ -469,7 +469,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Cameras and recorder quoted separately',
     bestFor: 'Shops, workshops, guesthouses and yards that want continuous recording and a live view on the phone.',
-    delivery: '1–2 weeks',
+    delivery: '1 to 2 weeks',
     includes: [
       'Camera placement plan based on a site visit',
       'Hikvision or Dahua system configuration',
@@ -491,7 +491,7 @@ export const PACKAGES: Package[] = [
     price: 'From MUR 20,000',
     priceUnit: 'one-off',
     bestFor: 'You miss calls, or staff use personal mobiles for business, and you want one system that follows them.',
-    delivery: '1–2 weeks',
+    delivery: '1 to 2 weeks',
     includes: [
       '3CX setup, cloud or on-site',
       'Extensions for each user and department',
@@ -539,7 +539,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'per device',
     priceNote: 'Parts quoted before any purchase',
     bestFor: 'A slow, crashing or infected laptop or desktop, or one that will not start.',
-    delivery: '1–3 days',
+    delivery: '1 to 3 days',
     includes: [
       'Diagnosis and a clear quote before I start',
       'Clean-up of malware, start-up clutter and unused software',
@@ -605,7 +605,7 @@ export const PACKAGES: Package[] = [
     price: 'MUR 10,000',
     priceUnit: 'one-off',
     bestFor: 'You have a website but customers searching for what you do in your area do not find you.',
-    delivery: '1–2 weeks, then one month of monitoring',
+    delivery: '1 to 2 weeks, then one month of monitoring',
     includes: [
       'Google Business Profile set up or cleaned up, with photos, hours and services',
       'On-page SEO: titles, descriptions, headings and image text on your existing pages',
@@ -650,7 +650,7 @@ export const PACKAGES: Package[] = [
     priceUnit: 'one-off',
     priceNote: 'Optional MUR 6,500 per month for eight designs with captions and scheduling',
     bestFor: 'You need a poster, a promotion or a menu that looks professional, and you need it this week.',
-    delivery: '2–3 working days',
+    delivery: '2 to 3 working days',
     includes: [
       'Three layouts, for example a poster, a social post and a story or flyer',
       'Your logo, colours and photos used throughout',

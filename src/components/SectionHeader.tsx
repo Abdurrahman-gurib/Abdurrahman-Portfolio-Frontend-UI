@@ -1,37 +1,33 @@
 import type { ReactNode } from 'react';
 
 export interface SectionHeaderProps {
-  /** Section number, e.g. "02" or "02.4". Rendered in ink inside the eyebrow. */
+  /** Kept for compatibility; numbers are no longer shown. */
   index?: string;
-  /** Eyebrow word(s), e.g. "Services". CSS uppercases it. Format becomes "02 — SERVICES". */
+  /** Small gradient pill above the heading, e.g. "Services". */
   eyebrow?: string;
   title: string;
-  /** Short muted line under the title (14px, 28ch). */
+  /** Short line under the title. */
   intro?: string;
-  /** Heading level. Default h2. Use h1 on a page's opening section only. */
+  /** Heading level. Default h2. */
   as?: 'h1' | 'h2' | 'h3';
   /** id for the heading (anchor target). */
   id?: string;
-  /** Sticky in cols 1–3 at >= 1024px by default. Pass false for very short sections. */
+  /** Kept for compatibility; heads are no longer sticky. */
   sticky?: boolean;
+  /** Centre the head (used above card grids). */
+  align?: 'left' | 'center';
   className?: string;
-  /** Extra content under the intro: marginalia (<dl class="aside">), an availability line, a button row. */
+  /** Extra content under the intro: an availability line, a button row. */
   children?: ReactNode;
 }
 
-/** The canonical section head (DESIGN.md §6.3): eyebrow with number, heading, optional intro. Place inside a .grid. */
-export function SectionHeader({ index, eyebrow, title, intro, as = 'h2', id, sticky = true, className, children }: SectionHeaderProps) {
+/** The section head: optional pill eyebrow, heading, optional intro. */
+export function SectionHeader({ eyebrow, title, intro, as = 'h2', id, align = 'left', className, children }: SectionHeaderProps) {
   const Heading = as;
-  const cls = ['section__head', sticky ? '' : 'section__head--static', className ?? ''].filter(Boolean).join(' ');
+  const cls = ['section__head', align === 'center' ? 'section__head--center' : '', className ?? ''].filter(Boolean).join(' ');
   return (
     <header className={cls}>
-      {(index || eyebrow) && (
-        <span className="eyebrow">
-          {index && <span className="n">{index}</span>}
-          {index && eyebrow ? ' — ' : ''}
-          {eyebrow}
-        </span>
-      )}
+      {eyebrow && <span className="eyebrow">{eyebrow}</span>}
       <Heading id={id}>{title}</Heading>
       {intro && <p>{intro}</p>}
       {children}

@@ -85,49 +85,49 @@ export const ABOUT: AboutContent = {
 
 export const TIMELINE: TimelineEntry[] = [
   {
-    period: 'January 2026 – present',
+    period: 'January 2026 to present',
     role: 'Lead Software Engineer',
     org: 'Leisure & hospitality group, south of Mauritius',
     summary:
       'I lead delivery of web platforms and internal systems. I built a garage-management platform covering six operational areas in React, NestJS, TypeScript and PostgreSQL, and I own the Azure DevOps pipelines, cloud environments, database migrations and backups. Current work includes a WhatsApp AI concierge, QR-based customer journeys and modernising the public website.',
   },
   {
-    period: 'March 2025 – December 2025',
+    period: 'March 2025 to December 2025',
     role: 'Senior Software Engineer',
     org: 'MCB Group',
     summary:
       'Payment and core banking changes on Temenos T24 R24 in a regulated Agile environment: MACSS, SWIFT MT102/MT103/MT202, remittances, funds transfer, direct debits and cheques. Production deployments, incident analysis, audits and disaster-recovery exercises on Red Hat systems.',
   },
   {
-    period: 'October 2023 – February 2025',
+    period: 'October 2023 to February 2025',
     role: 'Senior Full-Stack Engineer',
     org: 'SD Worx Mauritius',
     summary:
       'UK payroll, HR and banking features in Angular 17, TypeScript, ASP.NET Core, C# and SQL. Git and Azure DevOps workflows, CI/CD, testing and releases. Legacy modernisation, code reviews and knowledge transfer.',
   },
   {
-    period: 'March 2023 – September 2023',
+    period: 'March 2023 to September 2023',
     role: 'Software Engineer',
     org: 'RAPP Indian Ocean',
     summary:
       'Development, QA, DevOps and business analysis for Volkswagen, BMW UK, Mercedes and Nissan. Angular, React, .NET and Node.js features, with automated functional, regression, performance and security testing in Cypress, Selenium, Postman and Swagger.',
   },
   {
-    period: 'October 2022 – March 2023',
+    period: 'October 2022 to March 2023',
     role: 'Application Analyst',
     org: 'Ceridian Dayforce Mauritius',
     summary:
       'Supported Dayforce Talent Management for UK HR clients, investigating and resolving incidents within SLAs using VB Classic, SQL and XML.',
   },
   {
-    period: 'January 2020 – September 2022',
+    period: 'January 2020 to September 2022',
     role: 'Software Engineer',
     org: 'International Monetary Fund',
     summary:
       'Led development of public-finance and cross-border financial applications for the Ministries of Finance of Guinea-Bissau, Lesotho and Yemen in React, Node.js, PostgreSQL and MongoDB. Document authentication and secure financial-data transmission with OAuth 2.0, AES-256 and RSA.',
   },
   {
-    period: 'January 2016 – January 2020',
+    period: 'January 2016 to January 2020',
     role: 'Freelance Software Engineer, Web and Mobile',
     org: 'Independent',
     summary:
@@ -139,17 +139,17 @@ export const EDUCATION: Credential[] = [
   {
     title: 'MSc Artificial Intelligence (in progress)',
     issuer: 'University of Mauritius',
-    year: '2026 – 2028',
+    year: '2026 to 2028',
   },
   {
     title: 'BSc (Hons) Cyber Security, Second Class First Division',
     issuer: 'University of Mauritius',
-    year: '2024 – 2025',
+    year: '2024 to 2025',
   },
   {
     title: 'Diploma in IT and Cyber Security, GPA 4.0, Best Performer Student Award',
     issuer: 'Polytechnics Mauritius',
-    year: '2020 – 2023',
+    year: '2020 to 2023',
   },
 ];
 

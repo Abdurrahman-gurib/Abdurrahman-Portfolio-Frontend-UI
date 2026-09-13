@@ -4,10 +4,8 @@ import { COPY } from '../content/copy';
 import { CASE_STUDIES } from '../content/work';
 import { getService } from '../content/services';
 import { OWNER } from '../content/site';
-import { AvailabilityLine, Breadcrumb, Button, ContactStrip, DefinitionList, SectionHeader, WhatsAppButton } from '../components';
+import { Button, ContactStrip, CtaBand, DefinitionList, Headline, PageHero, Reveal, SectionHeader, StatChips } from '../components';
 import '../styles/pages/work.css';
-
-const SECTION_INDEX = '05';
 
 /**
  * Which service each case study falls under (slugs from services.ts). Structural, not copy:
@@ -22,11 +20,10 @@ const RELATED_SERVICE: Record<string, string> = {
   'web-vulnerability-scanner': 'cyber-security',
 };
 
-/** /work/:slug: the case-study dossier and ruled sections (DESIGN.md §7.5 detail), text only. */
+/** /work/:slug: the case study in three parts, with the stack and facts in a side card, then the related service. */
 export default function CaseStudy() {
   const { slug = '' } = useParams<{ slug: string }>();
-  const position = CASE_STUDIES.findIndex((c) => c.slug === slug);
-  const study = position >= 0 ? CASE_STUDIES[position] : undefined;
+  const study = CASE_STUDIES.find((c) => c.slug === slug);
   const service = study ? getService(RELATED_SERVICE[study.slug] ?? '') : undefined;
   const L = COPY.work.labels;
   const S = COPY.work.sections;
@@ -35,140 +32,104 @@ export default function CaseStudy() {
 
   if (!study) {
     return (
-      <div className="container page-work">
-        <section className="section section--first">
-          <Breadcrumb items={[{ label: COPY.work.title, to: '/work' }, { label: COPY.notFound.eyebrow }]} />
-          <div className="grid">
-            <div className="hero__main case__missing">
-              <span className="eyebrow">
-                <span className="n">{SECTION_INDEX}</span> — {COPY.work.title}
-              </span>
-              <h1 tabIndex={-1}>{COPY.work.notFoundTitle}</h1>
-              <p className="lead">{COPY.work.notFoundBody}</p>
-              <div className="btn-row">
-                <Button as="link" to="/work">
-                  {COPY.work.allWork}
-                </Button>
-              </div>
-            </div>
+      <div className="page-work">
+        <PageHero breadcrumb={[{ label: COPY.work.title, to: '/work' }, { label: COPY.notFound.eyebrow }]} eyebrow={COPY.work.title} title={COPY.work.notFoundTitle} lead={COPY.work.notFoundBody}>
+          <div className="btn-row">
+            <Button as="link" to="/work" variant="primary">
+              {COPY.work.allWork}
+            </Button>
           </div>
-        </section>
+        </PageHero>
       </div>
     );
   }
 
-  const index = `${SECTION_INDEX}.${position + 1}`;
-  const dossier = [
-    { term: L.stack, detail: study.stack.join(' · ') },
-    ...(study.facts ?? []).map((f) => ({ term: f.label, detail: f.value })),
-  ];
+  const facts = study.facts ?? [];
 
   return (
-    <div className="container page-work">
-      <section className="section section--first">
-        <Breadcrumb items={[{ label: COPY.work.title, to: '/work' }, { label: study.title }]} />
-        <div className="grid">
-          <div className="hero__main">
-            <span className="eyebrow">
-              <span className="n">{index}</span> — {COPY.work.title}
-            </span>
-            <h1 tabIndex={-1}>{study.title}</h1>
-            <p className="meta case__meta">
-              {study.context} · {study.period}
-            </p>
-          </div>
-          <div className="hero__facts">
-            <DefinitionList aria-label={`${study.title}: ${L.stack}, ${L.facts}`} items={dossier} />
-          </div>
-        </div>
-      </section>
+    <div className="page-work">
+      <PageHero
+        breadcrumb={[{ label: COPY.work.title, to: '/work' }, { label: study.title }]}
+        eyebrow={COPY.work.title}
+        titleId="case-title"
+        title={<Headline text={study.title} words={2} />}
+        lead={`${study.context} · ${study.period}`}
+        aside={facts.length > 0 ? <StatChips aria-label={L.facts} items={facts.map((f, i) => ({ value: f.value, label: f.label, grad: i === 0 }))} /> : undefined}
+      />
 
-      <section className="section">
-        <div className="grid">
-          <SectionHeader index={index} eyebrow={S.context} title={S.context} />
-          <div className="section__body prose case__prose">
-            <p>{study.problem}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="grid">
-          <SectionHeader index={index} eyebrow={S.built} title={S.built} />
-          <div className="section__body prose case__prose">
-            <p>{study.approach}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="grid">
-          <SectionHeader index={index} eyebrow={S.result} title={S.result} />
-          <div className="section__body prose case__prose">
-            <p>{study.outcome}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="grid">
-          <SectionHeader index={index} eyebrow={S.stack} title={S.stack} />
-          <div className="section__body">
-            <DefinitionList
-              className="case__stack"
-              aria-label={S.stack}
-              items={study.stack.map((item, i) => ({ term: String(i + 1).padStart(2, '0'), detail: item }))}
-            />
+      <section className="section band--page">
+        <div className="container">
+          <div className="split split--side case-layout">
+            <div className="case-main">
+              <Reveal>
+                <SectionHeader eyebrow={S.context} title={S.context} />
+                <p className="prose">{study.problem}</p>
+              </Reveal>
+              <Reveal>
+                <SectionHeader eyebrow={S.built} title={S.built} />
+                <p className="prose">{study.approach}</p>
+              </Reveal>
+              <Reveal>
+                <SectionHeader eyebrow={S.result} title={S.result} />
+                <p className="prose">{study.outcome}</p>
+              </Reveal>
+            </div>
+            <Reveal className="card card--strong case-side" delay={100}>
+              <h3>{S.stack}</h3>
+              <ul className="tag-row mt-4" aria-label={L.stack}>
+                {study.stack.map((item) => (
+                  <li className="tag tag--brand" key={item}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              {facts.length > 0 && (
+                <DefinitionList className="mt-8" aria-label={`${study.title}: ${L.facts}`} items={facts.map((f) => ({ term: f.label, detail: f.value }))} />
+              )}
+              <DefinitionList
+                className="mt-4"
+                items={[
+                  { term: L.context, detail: study.context },
+                  { term: L.period, detail: study.period },
+                ]}
+              />
+            </Reveal>
           </div>
         </div>
       </section>
 
       {service && (
         <section className="section">
-          <div className="grid">
-            <SectionHeader index={index} eyebrow={S.related} title={S.related} intro={COPY.work.relatedIntro} />
-            <div className="section__body">
-              <ul className="rows">
-                <li>
-                  <Link className="row-link" to={`/services/${service.slug}`}>
-                    <span className="idx">02.{service.index}</span>
-                    <div>
-                      <h3>{service.name}</h3>
-                      <p>{service.tagline}</p>
-                      <span className="stack">{service.typicalTimeline}</span>
-                    </div>
-                    <span className="price">{service.priceFrom}</span>
-                    <span className="arrow" aria-hidden="true">
-                      →
+          <div className="container">
+            <div className="split split--side">
+              <Reveal>
+                <SectionHeader eyebrow={S.related} title={S.related} intro={COPY.work.relatedIntro} />
+                <Link className="card card--hover svc-card" data-group={service.group} to={`/services/${service.slug}`}>
+                  <span className="card__accent" aria-hidden="true" />
+                  <h3>{service.name}</h3>
+                  <p>{service.tagline}</p>
+                  <span className="tag">{service.typicalTimeline}</span>
+                  <span className="svc-card__meta">
+                    <span className="svc-card__price">{service.priceFrom}</span>
+                    <span className="svc-card__arrow" aria-hidden="true">
+                      &rarr;
                     </span>
-                  </Link>
-                </li>
-              </ul>
+                  </span>
+                </Link>
+              </Reveal>
             </div>
           </div>
         </section>
       )}
 
-      <section className="section" id="contact">
-        <div className="grid">
-          <SectionHeader index="07" eyebrow={COPY.contact.title} title={COPY.home.contactTitle} intro={COPY.home.contactIntro} />
-          <div className="section__body">
-            <div className="btn-row">
-              <Button as="link" to="/contact" variant="primary">
-                {COPY.nav.cta}
-              </Button>
-              <WhatsAppButton />
-            </div>
-            <AvailabilityLine />
-            <ContactStrip className="mt-8" />
-            <p className="mt-8">
-              <Link className="link-arrow" to="/work">
-                {COPY.work.allWork}
-              </Link>
-            </p>
-          </div>
-        </div>
-      </section>
+      <CtaBand id="contact" eyebrow={COPY.contact.title} title={COPY.home.contactTitle} body={COPY.home.contactIntro}>
+        <ContactStrip className="mt-6" />
+        <p className="mt-6">
+          <Link className="link-arrow" to="/work">
+            {COPY.work.allWork}
+          </Link>
+        </p>
+      </CtaBand>
     </div>
   );
 }

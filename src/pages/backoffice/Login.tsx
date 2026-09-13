@@ -12,7 +12,7 @@ interface FromState {
   from?: string;
 }
 
-/** Back-office sign-in (DESIGN.md §7.8): brand-only nav, eyebrow, h1, intro, error notice, two fields, one button, cols 1–5. */
+/** Back-office sign-in (DESIGN.md §7.8): brand-only nav, eyebrow, h1, intro, error notice, two fields, one button, cols 1 to 5. */
 export default function Login() {
   useSeo(`${COPY.backoffice.loginTitle} · ${COPY.backoffice.title}`);
   const { user, loading, login } = useAuth();
@@ -91,7 +91,7 @@ export default function Login() {
                     value={password}
                     onChange={setPassword}
                   />
-                  <Button type="submit" disabled={sending} arrow={false}>
+                  <Button type="submit" variant="primary" disabled={sending} arrow={false}>
                     {sending ? COPY.backoffice.signingIn : COPY.backoffice.signIn}
                   </Button>
                 </form>

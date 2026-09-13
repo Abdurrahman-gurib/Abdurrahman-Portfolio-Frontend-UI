@@ -62,7 +62,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'uk-payroll-hr-features',
     title: 'UK payroll and HR features',
     context: 'SD Worx · payroll and HR software · UK clients',
-    period: '2023–2025',
+    period: '2023 to 2025',
     problem:
       'A payroll provider serving UK employers needed new payroll, HR and banking features in a large, long-lived codebase. Older parts of the system had to be modernised without breaking what customers relied on.',
     approach:
@@ -79,7 +79,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'public-finance-applications',
     title: 'Public-finance applications for three Ministries of Finance',
     context: 'International Monetary Fund · Guinea-Bissau, Lesotho and Yemen',
-    period: '2020–2022',
+    period: '2020 to 2022',
     problem:
       'Three Ministries of Finance needed applications to manage public finances and cross-border financial data. Documents had to be verifiable and financial data had to move between parties without being exposed.',
     approach:

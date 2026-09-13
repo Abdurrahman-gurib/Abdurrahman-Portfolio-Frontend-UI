@@ -147,7 +147,7 @@ function describeEvent(ev: EnquiryEvent): ReactNode {
   }
 }
 
-/** Enquiry detail (DESIGN.md §7.11): message, notes and activity in cols 1–8; contact, status controls and the spec sheet in cols 9–12. */
+/** Enquiry detail (DESIGN.md §7.11): message, notes and activity in cols 1 to 8; contact, status controls and the spec sheet in cols 9 to 12. */
 export default function EnquiryDetail() {
   const bo = COPY.backoffice;
   const d = bo.detail;
@@ -344,7 +344,7 @@ export default function EnquiryDetail() {
     <div className="page-bo-enquiry">
       <header className="head">
         <span className="eyebrow">
-          <span className="n">{enquiry.reference}</span> — {d.received} {formatDateTime(enquiry.createdAt)}
+          <span className="n">{enquiry.reference}</span> · {d.received} {formatDateTime(enquiry.createdAt)}
         </span>
         <h1>{title}</h1>
         <div className="cluster">

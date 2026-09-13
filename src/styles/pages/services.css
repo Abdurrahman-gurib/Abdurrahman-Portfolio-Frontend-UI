@@ -1,37 +1,12 @@
-/* Services index (/services) and service detail (/services/:slug).
-   Grid placements and a few scoped additions only; components come from components.css. */
+/* Services index (/services) and service detail (/services/:slug). */
 
-/* ---------- Index: six groups stacked inside the one 02 body column ---------- */
-.page-services .svc-group h3 { max-width: 24ch; }
-.page-services .svc-group > .small { margin-top: var(--s-2); margin-bottom: var(--s-6); max-width: var(--measure-lead); }
+.page-services .svc-card h4 { margin-top: var(--s-1); }
 
-/* Service names are h4 here (the group title is the h3) but keep the row-link title style from DESIGN.md §6.11 */
-.page-services .row-link h4 { font: 500 var(--fs-md) / var(--lh-md) var(--font-sans); letter-spacing: 0; }
-.page-services .row-link:hover h4 { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: .18em; text-decoration-thickness: 1px; }
-
-/* ---------- Detail ---------- */
-.page-service .svc-nav__dir { display: block; font: 500 var(--fs-2xs) / var(--lh-2xs) var(--font-mono); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); margin-bottom: var(--s-1); }
-
-/* Price unit ("one-off", "per month") sits after the figure in the rate-card table */
-.page-service .sheet td.num .unit { margin-left: var(--s-2); font-size: var(--fs-2xs); color: var(--muted); }
-
-/* Under the rate card: the "from" note and the link to the full sheet on one ruled line */
-.page-service .svc-sheet-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-6); }
-.page-service .svc-sheet-foot .meta { max-width: var(--measure-meta); }
-@media (max-width: 479px) { .page-service .svc-sheet-foot .btn { width: 100%; } }
-
-/* ---------- Shared: service rows ---------- */
-/* The price column grows to fit its longest content ("From MUR 1,500 per device") instead of overrunning the arrow cell */
+.page-service .svc-facts { align-self: start; }
+.page-service .svc-facts .kv dd .tag-row { margin-top: var(--s-1); }
+.page-service .goodfor-card p { font-size: var(--fs-base); color: var(--c-ink); font-weight: 500; }
+.page-service #questions .split--side > .reveal { min-width: 0; }
+.page-service #questions .faq { max-width: 52rem; }
 @media (min-width: 1024px) {
-  .page-services .row-link,
-  .page-service .row-link { grid-template-columns: 3.5rem 1fr minmax(11rem, max-content) 1.5rem; }
-}
-
-/* Typical cost table: fixed column shares so Package is not squeezed while Delivery has slack */
-@media (min-width: 768px) {
-  .page-service .sheet th:nth-child(1) { width: 24%; }
-  .page-service .sheet th:nth-child(2) { width: 38%; }
-  .page-service .sheet th:nth-child(3) { width: 14%; }
-  .page-service .sheet th:nth-child(4) { width: 16%; }
-  .page-service .sheet td.pkg { white-space: normal; }
+  .page-service .svc-facts { position: sticky; top: calc(var(--nav-h) + var(--s-5)); }
 }

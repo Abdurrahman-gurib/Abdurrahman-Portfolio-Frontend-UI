@@ -8,7 +8,7 @@ interface BaseFieldProps {
   name: string;
   /** Defaults to `f-${name}`. */
   id?: string;
-  /** Error message (without the "Error — " prefix, which CSS adds). */
+  /** Error message (shown under the control). */
   error?: string;
   /** Helper line under the control. */
   hint?: string;

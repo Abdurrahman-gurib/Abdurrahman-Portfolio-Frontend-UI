@@ -10,12 +10,14 @@ const C = COPY.contact;
 export interface ContactLadderProps {
   /** Pre-filled WhatsApp opening message for the link and the button. */
   message?: string;
-  /** Render the filled WhatsApp block button under the ladder (DESIGN.md §7.7). Default true. */
+  /** Render the WhatsApp block button under the list. Default true. */
   button?: boolean;
+  /** Wrap in a glass card. Default true. */
+  card?: boolean;
   className?: string;
 }
 
-/** Channel hrefs come from site.ts; labels, values and hints from copy.ts. Every value is mono (a number, an address or a URL). */
+/** Channel hrefs come from site.ts; labels, values and hints from copy.ts. */
 function channelHref(label: string, message?: string): { href: string; external: boolean; wa: boolean } {
   switch (label) {
     case 'WhatsApp':
@@ -48,12 +50,8 @@ function withBreaks(value: string): ReactNode {
   ));
 }
 
-/**
- * The contact ladder (DESIGN.md §6.9 "Contact ladder"): dl.spec with WhatsApp (green link, "fastest"), phone, email,
- * LinkedIn, reply time and location, then the filled WhatsApp block button. Sits beside the enquiry form in the
- * 07 section of every public page.
- */
-export function ContactLadder({ message, button = true, className }: ContactLadderProps) {
+/** The ways to reach me: WhatsApp, phone, email, LinkedIn, reply time and location, then the WhatsApp button. */
+export function ContactLadder({ message, button = true, card = true, className }: ContactLadderProps) {
   const site = useSite();
   const items = [
     ...C.channels.map((ch) => {
@@ -80,10 +78,10 @@ export function ContactLadder({ message, button = true, className }: ContactLadd
   ];
 
   return (
-    <div className={['contact-ladder', className ?? ''].filter(Boolean).join(' ')}>
+    <div className={['contact-ladder', card ? 'card card--strong' : '', className ?? ''].filter(Boolean).join(' ')}>
       <DefinitionList className="ladder" items={items} aria-label={COPY.shell.contactStripLabel} />
       {button && (
-        <Button as="a" href={whatsappLink(message)} target="_blank" variant="whatsapp" block>
+        <Button as="a" href={whatsappLink(message)} target="_blank" variant="whatsapp" block arrow={false}>
           {COPY.shell.whatsappWord} <span className="mono">{OWNER.phoneDisplay}</span>
         </Button>
       )}

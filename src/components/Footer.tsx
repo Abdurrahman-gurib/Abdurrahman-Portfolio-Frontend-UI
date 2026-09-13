@@ -4,15 +4,14 @@ import { SERVICES } from '../content/services';
 import { OWNER, TEL_LINK, mailtoLink, whatsappLink } from '../content/site';
 import { AvailabilityLine } from './AvailabilityLine';
 
-/** The site footer (DESIGN.md §6.14): band, strong top rule, brand / index / services / contact, legal row.
- *  Legal row: copyright left, the back-office link right. No colophon; a Privacy link is added only once a policy page exists. */
+/** Dark gradient footer: brand, pages, services, contact, legal row. */
 export function Footer() {
   const year = new Date().getFullYear();
   const linkedinLabel = OWNER.linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
   return (
     <footer className="footer">
       <div className="container">
-        <div className="grid">
+        <div className="footer__grid">
           <div className="footer__brand">
             <div className="name">{OWNER.name}</div>
             <p>{COPY.footer.line}</p>
@@ -25,12 +24,12 @@ export function Footer() {
           <div className="footer__col footer__col--index">
             <h4>{COPY.footer.indexHeading}</h4>
             <ul>
-              {COPY.nav.index.map((item) => (
-                <li key={item.n}>
-                  <Link to={item.to}>
-                    <span className="n">{item.n}</span>
-                    {item.label}
-                  </Link>
+              <li>
+                <Link to="/">{COPY.shell.homeLabel}</Link>
+              </li>
+              {COPY.nav.items.map((item) => (
+                <li key={item.to}>
+                  <Link to={item.to}>{item.label}</Link>
                 </li>
               ))}
             </ul>
@@ -71,11 +70,11 @@ export function Footer() {
               </li>
             </ul>
           </div>
+        </div>
 
-          <div className="footer__legal">
-            <span>{COPY.footer.copyright.replace('{year}', String(year))}</span>
-            <Link to="/backoffice">{COPY.footer.backofficeLink}</Link>
-          </div>
+        <div className="footer__legal">
+          <span>{COPY.footer.copyright.replace('{year}', String(year))}</span>
+          <Link to="/backoffice">{COPY.footer.backofficeLink}</Link>
         </div>
       </div>
     </footer>
